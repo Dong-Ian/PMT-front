@@ -18,7 +18,6 @@ export default async function CreateChattingRoomFunction({
   });
 
   const res = await result.json();
-  console.log("create chatting room function: %o", res);
 
   return res;
 }

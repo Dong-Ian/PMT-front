@@ -9,7 +9,6 @@ export default async function GetChattingRoomFunction({ token }: TokenProps) {
   });
 
   const res = await result.json();
-  console.log("get chatting room function result: %o", res);
 
   return res;
 }
