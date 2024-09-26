@@ -29,7 +29,7 @@ const LoginPage: React.FC = () => {
 
     if (result.code === "0000") {
       setToken({
-        accssToken: result.accessToken,
+        accessToken: result.accessToken,
         refreshToken: result.refreshToken,
       });
       navigate("/");
