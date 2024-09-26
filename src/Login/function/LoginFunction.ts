@@ -13,6 +13,7 @@ export default async function LoginFunction({
   });
 
   const res = await result.json();
+  console.log("login function result: %o", res);
 
   return res;
 }
