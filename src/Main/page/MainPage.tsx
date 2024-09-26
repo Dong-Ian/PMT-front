@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import { useRecoilValue } from "recoil";
 import { tokenState } from "../../Utils/Atom/Atom";
@@ -9,7 +10,9 @@ import CreateChattingRoomFunction from "../function/CreateChattingRoomFunction";
 import { ChattingRoomListInterface } from "../type/MainType";
 
 const MainPage: React.FC = () => {
+  const navigate = useNavigate();
   const token = useRecoilValue(tokenState);
+
   const [chatRoomList, setChatRoomList] = useState<
     ChattingRoomListInterface[] | null
   >(null);
@@ -49,7 +52,12 @@ const MainPage: React.FC = () => {
         <p>MainPage</p>
         {chatRoomList.map((room: ChattingRoomListInterface, index: number) => {
           return (
-            <div key={index}>
+            <div
+              onClick={() => {
+                navigate(`/chatting/${room.chatRoomSeq}`);
+              }}
+              key={index}
+            >
               <p>{room.chatRoomName}</p>
             </div>
           );
