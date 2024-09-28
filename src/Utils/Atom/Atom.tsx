@@ -14,3 +14,9 @@ export const tokenState = atom({
   default: { accessToken: "", refreshToken: "" },
   effects_UNSTABLE: [persistAtom],
 });
+
+export const userIdState = atom({
+  key: "userIdState",
+  default: "",
+  effects_UNSTABLE: [persistAtom],
+});

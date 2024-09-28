@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { useSetRecoilState } from "recoil";
-import { tokenState } from "../../Utils/Atom/Atom";
+import { tokenState, userIdState } from "../../Utils/Atom/Atom";
 
 import LoginFunction from "../function/LoginFunction";
 
@@ -16,6 +16,7 @@ const LoginPage: React.FC = () => {
   const [password, setPassword] = useState<string>("");
 
   const setToken = useSetRecoilState(tokenState);
+  const setUserId = useSetRecoilState(userIdState);
 
   const Login = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -32,6 +33,7 @@ const LoginPage: React.FC = () => {
         accessToken: result.accessToken,
         refreshToken: result.refreshToken,
       });
+      setUserId(result.userId);
       navigate("/");
     }
   };
