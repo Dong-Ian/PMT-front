@@ -15,8 +15,8 @@ export const tokenState = atom({
   effects_UNSTABLE: [persistAtom],
 });
 
-export const userIdState = atom({
-  key: "userIdState",
-  default: "",
+export const modeState = atom({
+  key: "modeState",
+  default: false,
   effects_UNSTABLE: [persistAtom],
 });

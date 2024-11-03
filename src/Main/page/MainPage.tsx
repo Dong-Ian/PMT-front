@@ -18,27 +18,25 @@ const MainPage: React.FC = () => {
   >(null);
 
   async function GetChattingRoom() {
-    const result = await GetChattingRoomFunction({ token: token });
-    if (result.code === "0000" && result.chatRoomData) {
-      setChatRoomList(result.chatRoomData);
-      return;
-    }
+    // const result = await GetChattingRoomFunction({ token: token });
+    // if (result.code === "0000" && result.chatRoomData) {
+    //   setChatRoomList(result.chatRoomData);
+    //   return;
+    // }
   }
 
   async function CreateChattingRoom() {
-    const result = await CreateChattingRoomFunction({
-      token: token,
-      chatRoomName: "ex",
-      userIdList: [],
-    });
-
-    if (result.code === "0000") {
-      alert("채팅방 생성 성공");
-      return;
-    }
-
-    alert("체팅방 생성 실패");
-    return;
+    // const result = await CreateChattingRoomFunction({
+    //   token: token,
+    //   chatRoomName: "ex",
+    //   userIdList: [],
+    // });
+    // if (result.code === "0000") {
+    //   alert("채팅방 생성 성공");
+    //   return;
+    // }
+    // alert("체팅방 생성 실패");
+    // return;
   }
 
   useEffect(() => {

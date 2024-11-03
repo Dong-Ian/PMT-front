@@ -1,13 +1,16 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { useSetRecoilState } from "recoil";
-import { tokenState, userIdState } from "../../Utils/Atom/Atom";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { modeState, tokenState } from "../../Utils/Atom/Atom";
+
+import styles from "../style/login.module.css";
 
 import LoginFunction from "../function/LoginFunction";
 
 import Email from "../component/Email";
 import Password from "../component/Password";
+import ModeButton from "../../Utils/\bcomponent/ModeButton";
 
 const LoginPage: React.FC = () => {
   const navigate = useNavigate();
@@ -15,8 +18,8 @@ const LoginPage: React.FC = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
+  const mode = useRecoilValue(modeState);
   const setToken = useSetRecoilState(tokenState);
-  const setUserId = useSetRecoilState(userIdState);
 
   const Login = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -33,18 +36,31 @@ const LoginPage: React.FC = () => {
         accessToken: result.accessToken,
         refreshToken: result.refreshToken,
       });
-      setUserId(result.userId);
       navigate("/");
     }
   };
 
   return (
-    <div>
-      <h1>Login Page</h1>
-      <form method="post" onSubmit={Login}>
+    <div className={`container ${mode ? "light_container" : "dark_container"}`}>
+      <ModeButton />
+      <p
+        className={`${styles.title} ${
+          mode ? styles.light_title : styles.dark_title
+        }`}
+      >
+        talk
+      </p>
+
+      <form className={styles.login_box} method="post" onSubmit={Login}>
         <Email value={email} onChange={setEmail} />
         <Password value={password} onChange={setPassword} />
-        <input type="submit" value="로그인" />
+        <input
+          className={`${styles.login_button} ${
+            mode ? styles.light_login_button : styles.dark_login_button
+          }`}
+          type="submit"
+          value="로그인"
+        />
       </form>
     </div>
   );
