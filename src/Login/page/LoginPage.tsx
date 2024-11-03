@@ -10,7 +10,6 @@ import LoginFunction from "../function/LoginFunction";
 
 import Email from "../component/Email";
 import Password from "../component/Password";
-import ModeButton from "../../Utils/\bcomponent/ModeButton";
 
 const LoginPage: React.FC = () => {
   const navigate = useNavigate();
@@ -36,13 +35,18 @@ const LoginPage: React.FC = () => {
         accessToken: result.accessToken,
         refreshToken: result.refreshToken,
       });
-      navigate("/");
+      navigate("/main");
+      return;
     }
+
+    alert(
+      "등록되지 않은 아이디이거나\n아이디 또는 비밀번호를 잘못 입력했습니다."
+    );
+    return;
   };
 
   return (
     <div className={`container ${mode ? "light_container" : "dark_container"}`}>
-      <ModeButton />
       <p
         className={`${styles.title} ${
           mode ? styles.light_title : styles.dark_title
@@ -54,13 +58,13 @@ const LoginPage: React.FC = () => {
       <form className={styles.login_box} method="post" onSubmit={Login}>
         <Email value={email} onChange={setEmail} />
         <Password value={password} onChange={setPassword} />
-        <input
-          className={`${styles.login_button} ${
-            mode ? styles.light_login_button : styles.dark_login_button
-          }`}
-          type="submit"
-          value="로그인"
-        />
+        <input className={styles.login_button} type="submit" value="로그인" />
+        <button
+          className={styles.signup_button}
+          onClick={() => navigate("/signup")}
+        >
+          회원이 아니신가요?
+        </button>
       </form>
     </div>
   );

@@ -13,12 +13,9 @@ const Password = ({ value, onChange }: TextFieldProps) => {
   };
 
   return (
-    <div
-      className={`${styles.input} ${
-        mode ? styles.light_input : styles.dark_input
-      }`}
-    >
+    <div className={styles.input}>
       <input
+        className={mode ? styles.light_input : styles.dark_input}
         onChange={handlePassword}
         type="password"
         placeholder="비밀번호"

@@ -9,8 +9,8 @@
 }
 
 .title {
-  margin-top: 100px;
-  font-size: 100px;
+  padding-top: 100px;
+  font-size: 80px;
   text-align: center;
   font-weight: 600;
 }
@@ -26,23 +26,65 @@
 .input {
   display: flex;
   justify-content: center;
-  margin-top: 1px;
+  margin-top: 10px;
   > input {
     width: 80%;
     height: 43px;
     box-sizing: border-box;
     padding-left: 10px;
+    color: white;
+    font-size: 15px;
+    border-radius: 5px;
   }
   > input:focus {
     outline: none;
   }
 }
 
+.dark_input {
+  background-color: rgb(33, 33, 33);
+  border: 1px solid rgb(33, 33, 33);
+}
+.dark_input::placeholder {
+  color: white;
+}
+.dark_input:-webkit-autofill,
+.dark_input:-webkit-autofill:hover,
+.dark_input:-webkit-autofill:focus,
+.dark_input:-webkit-autofill:active {
+  -webkit-text-fill-color: white;
+  box-shadow: 0 0 0px 1000px rgb(33, 33, 33) inset;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+.light_input {
+  border: 1px solid rgb(198, 198, 198);
+}
+.light_input:-webkit-autofill,
+.light_input:-webkit-autofill:hover,
+.light_input:-webkit-autofill:focus,
+.light_input:-webkit-autofill:active {
+  box-shadow: 0 0 0px 1000px white inset;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
 .login_button {
   width: 80%;
   margin: 30px auto 0 auto;
-  height: 40px;
+  height: 45px;
   border-radius: 5px;
   border: 1px solid rgb(124, 118, 118);
-  background-color: white;
+  background: linear-gradient(to right, rgb(207, 0, 131), rgb(189, 0, 31));
+  color: white;
+  font-weight: 1000;
+  font-size: 15px;
+  border: none;
+}
+
+.signup_button {
+  background-color: transparent;
+  border: none;
+  margin: 30px auto;
+  color: white;
+  text-decoration: underline;
 }
