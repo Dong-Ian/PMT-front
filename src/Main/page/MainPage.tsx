@@ -1,15 +1,31 @@
+import moment from "moment";
+import "moment/locale/ko";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
 import { useRecoilValue } from "recoil";
 import { modeState, tokenState } from "../../Utils/Atom/Atom";
-
 import styles from "../style/main.module.css";
-
 import GetChattingRoomFunction from "../function/GetChattingRoomFunction";
 import { ChattingRoomListInterface } from "../type/MainType";
-
 import NavigationBar from "../../Utils/\bcomponent/NavigationBar";
+
+const DateRender = ({ modDate }: { modDate: string }) => {
+  const now = moment();
+  const mod = moment(modDate).add(9, "hour");
+
+  const getDisplayText = () => {
+    const daydiff = now.diff(mod, "days");
+    if (daydiff >= 1) return mod.format("YYYY-MM-DD");
+
+    return mod.format("A h:mm");
+  };
+
+  return (
+    <div>
+      <p>{getDisplayText()}</p>
+    </div>
+  );
+};
 
 const MainPage: React.FC = () => {
   const navigate = useNavigate();
@@ -40,17 +56,23 @@ const MainPage: React.FC = () => {
       >
         <NavigationBar />
         <div className={styles.main_container}>
-          <p>MainPage</p>
+          <p className={styles.title}>채팅</p>
           {chatRoomList.map(
             (room: ChattingRoomListInterface, index: number) => {
               return (
                 <div
+                  className={styles.chatting_room}
                   onClick={() => {
                     navigate(`/chatting/${room.chatRoomSeq}`);
                   }}
                   key={index}
                 >
-                  <p>{room.chatRoomName}</p>
+                  <div className={styles.contents}>
+                    <p>{room.chatRoomName}</p>
+                  </div>
+                  <div className={styles.information}>
+                    <DateRender modDate={room.modDate} />
+                  </div>
                 </div>
               );
             }
