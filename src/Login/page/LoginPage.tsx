@@ -10,6 +10,7 @@ import LoginFunction from "../function/LoginFunction";
 
 import Email from "../component/Email";
 import Password from "../component/Password";
+import ModeButton from "../../Utils/\bcomponent/ModeButton";
 
 const LoginPage: React.FC = () => {
   const navigate = useNavigate();
@@ -47,6 +48,7 @@ const LoginPage: React.FC = () => {
 
   return (
     <div className={`container ${mode ? "light_container" : "dark_container"}`}>
+      <ModeButton />
       <p
         className={`${styles.title} ${
           mode ? styles.light_title : styles.dark_title

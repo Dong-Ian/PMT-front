@@ -27,3 +27,21 @@
 .toggleSwitch.toggled .toggleButton {
   left: 24px;
 }
+
+.navigationbar {
+  width: 70px;
+  height: 100vh;
+  text-align: center;
+  padding: 25px 0;
+  color: white;
+  position: fixed;
+  top: 0;
+  max-width: 500px;
+}
+
+.light_navigationbar {
+  background-color: white;
+}
+.dark_navigationbar {
+  background-color: #333;
+}

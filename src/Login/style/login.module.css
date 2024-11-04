@@ -13,6 +13,7 @@
   font-size: 80px;
   text-align: center;
   font-weight: 600;
+  letter-spacing: 3px;
 }
 
 .light_title {
@@ -29,10 +30,10 @@
   margin-top: 10px;
   > input {
     width: 80%;
-    height: 43px;
+    height: 45px;
     box-sizing: border-box;
-    padding-left: 10px;
-    color: white;
+    padding-left: 13px;
+
     font-size: 15px;
     border-radius: 5px;
   }
@@ -44,6 +45,7 @@
 .dark_input {
   background-color: rgb(33, 33, 33);
   border: 1px solid rgb(33, 33, 33);
+  color: white;
 }
 .dark_input::placeholder {
   color: white;
