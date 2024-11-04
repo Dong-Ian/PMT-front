@@ -15,8 +15,32 @@
 }
 
 .contents {
+  display: flex;
   float: left;
   width: 340px;
+}
+
+.image {
+  border: 1px solid red;
+  background-color: red;
+  border-radius: 10px;
+  width: 40px;
+  height: 40px;
+  margin-right: 10px;
+}
+
+.inner_contents {
+  margin-top: 5px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  .room_name {
+    font-weight: 600;
+  }
+  .preview {
+    font-size: 12px;
+    color: gray;
+  }
 }
 
 .information {

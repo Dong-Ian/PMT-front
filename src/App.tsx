@@ -7,7 +7,7 @@ import { modeState } from "./Utils/Atom/Atom";
 import LoginPage from "./Login/page/LoginPage";
 import SignUpPage from "./SignUp/page/SignUpPage";
 import MainPage from "./Main/page/MainPage";
-import ChattingPage from "./Chatting/ChattingPage";
+import ChattingPage from "./Chatting/page/ChattingPage";
 
 function App() {
   const mode = useRecoilValue(modeState);

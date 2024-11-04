@@ -1,6 +1,4 @@
-export interface TokenProps {
-  token: { accessToken: string; refreshToken: string };
-}
+import { TokenProps } from "../../Utils/type/UtilType";
 
 export interface CreateChattingRoomFunctionProps extends TokenProps {
   chatRoomName: string;

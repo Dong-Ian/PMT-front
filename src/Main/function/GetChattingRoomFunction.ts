@@ -1,4 +1,4 @@
-import { TokenProps } from "../type/MainType";
+import { TokenProps } from "../../Utils/type/UtilType";
 
 export default async function GetChattingRoomFunction({ token }: TokenProps) {
   const result = await fetch(`${process.env.REACT_APP_API}/chat/room`, {
