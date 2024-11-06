@@ -7,7 +7,7 @@ import "react-resizable/css/styles.css";
 const MainPage: React.FC = () => {
   const initialLayout: Layout[] = [
     {
-      i: "1",
+      i: "item-1",
       x: 0,
       y: 0,
       w: 3,
@@ -22,7 +22,7 @@ const MainPage: React.FC = () => {
       resizeHandles: ["se", "sw"],
     },
     {
-      i: "2",
+      i: "item-2",
       x: 3,
       y: 0,
       w: 3,
@@ -37,7 +37,7 @@ const MainPage: React.FC = () => {
       resizeHandles: ["se", "sw"],
     },
     {
-      i: "3",
+      i: "item-3",
       x: 6,
       y: 0,
       w: 3,
@@ -56,7 +56,6 @@ const MainPage: React.FC = () => {
   const [layout, setLayout] = useState<Layout[]>(initialLayout);
   const [counter, setCounter] = useState(4);
 
-  // + 버튼 클릭 시 새로운 아이템을 추가하는 함수
   const addItem = () => {
     const maxY = layout.reduce(
       (max, item) => Math.max(max, item.y + item.h),
@@ -134,6 +133,7 @@ const MainPage: React.FC = () => {
     setLayout([...layout, newItem]);
     setCounter(counter + 1);
   };
+
   const modify = ({ index }: { index: string }) => {
     console.log(index);
   };
@@ -165,22 +165,28 @@ const MainPage: React.FC = () => {
         compactType={null}
         onLayoutChange={(newLayout) => setLayout(newLayout)}
       >
-        {layout.map((item) => (
-          <div
-            key={item.i}
-            style={{
-              border: "1px solid black",
-              padding: "30px",
-              backgroundColor: "white",
-              borderRadius: "8px",
-              boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
-            }}
-          >
-            <button onClick={() => modify({ index: item.i })}>수정</button>
-            <h4>Item {item.i}</h4>
-            <p>Content for Item {item.i}</p>
-          </div>
-        ))}
+        {layout.map((item) => {
+          const [type, index] = item.i.split("-");
+
+          return (
+            <div
+              key={item.i}
+              style={{
+                border: "1px solid black",
+                padding: "30px",
+                backgroundColor: "white",
+                borderRadius: "8px",
+                boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
+              }}
+            >
+              <button onClick={() => modify({ index: item.i })}>수정</button>
+              <h4>Item {item.i}</h4>
+              {type === "todo" && <div>todo {index}</div>}
+              {type === "memo" && <div>memo {index}</div>}
+              {type === "item" && <div>item {index}</div>}
+            </div>
+          );
+        })}
       </GridLayout>
     </div>
   );
