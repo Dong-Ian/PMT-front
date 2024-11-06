@@ -181,9 +181,17 @@ const MainPage: React.FC = () => {
                 }}
               >
                 {editMode === index ? (
-                  <button onClick={() => setEditMode(null)}>완료</button>
+                  <button
+                    onMouseDown={(e) => e.stopPropagation()}
+                    onClick={() => setEditMode(null)}
+                  >
+                    완료
+                  </button>
                 ) : (
-                  <button onClick={() => modify({ index: item.i })}>
+                  <button
+                    onMouseDown={(e) => e.stopPropagation()}
+                    onClick={() => modify({ index: item.i })}
+                  >
                     수정
                   </button>
                 )}
@@ -209,15 +217,23 @@ const MainPage: React.FC = () => {
                 }}
               >
                 {editMode === index ? (
-                  <button onClick={() => setEditMode(null)}>완료</button>
+                  <button
+                    onMouseDown={(e) => e.stopPropagation()}
+                    onClick={() => setEditMode(null)}
+                  >
+                    완료
+                  </button>
                 ) : (
-                  <button onClick={() => modify({ index: item.i })}>
+                  <button
+                    onMouseDown={(e) => e.stopPropagation()}
+                    onClick={() => modify({ index: item.i })}
+                  >
                     수정
                   </button>
                 )}
                 {editMode === index ? (
                   <div>
-                    <textarea></textarea>
+                    <textarea />
                   </div>
                 ) : (
                   <div>memo 내용</div>
@@ -238,9 +254,19 @@ const MainPage: React.FC = () => {
               }}
             >
               {editMode === index ? (
-                <button onClick={() => setEditMode(null)}>완료</button>
+                <button
+                  onMouseDown={(e) => e.stopPropagation()}
+                  onClick={() => setEditMode(null)}
+                >
+                  완료
+                </button>
               ) : (
-                <button onClick={() => modify({ index: item.i })}>수정</button>
+                <button
+                  onMouseDown={(e) => e.stopPropagation()}
+                  onClick={() => modify({ index: item.i })}
+                >
+                  수정
+                </button>
               )}
               {editMode === index ? <div>item 수정</div> : <div>item 내용</div>}
             </div>
