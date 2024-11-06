@@ -1,123 +1,87 @@
-import moment from "moment";
-import "moment/locale/ko";
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { modeState, tokenState } from "../../Utils/Atom/Atom";
+import React, { useState } from "react";
+import { DndContext, DragEndEvent } from "@dnd-kit/core";
+import {
+  SortableContext,
+  verticalListSortingStrategy,
+  arrayMove,
+} from "@dnd-kit/sortable";
+import { initialData, Card, List, Board } from "../type/MainType";
 import styles from "../style/main.module.css";
-import GetChattingRoomFunction from "../function/GetChattingRoomFunction";
-import { ChattingRoomListInterface } from "../type/MainType";
-import NavigationBar from "../../Utils/\bcomponent/NavigationBar";
-import GetRefreshTokenFunction from "../../Utils/function/GetRefreshTokenFunction";
+import ListComponent from "../component/ListComponent";
 
-const DateRender = ({ modDate }: { modDate: string }) => {
-  const now = moment();
-  const mod = moment(modDate).add(9, "hour");
+const MainPage: React.FC = () => {
+  const [board, setBoard] = useState<Board>(initialData);
 
-  const getDisplayText = () => {
-    const daydiff = now.diff(mod, "days");
-    if (daydiff >= 1) return mod.format("YYYY-MM-DD");
+  // 드래그 종료 시 처리할 함수
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
 
-    return mod.format("A h:mm");
+    if (!over) return;
+
+    const sourceListIndex = board.lists.findIndex((list) =>
+      list.cards.some((card) => card.id === active.id)
+    );
+    const targetListIndex = board.lists.findIndex((list) =>
+      list.cards.some((card) => card.id === over.id)
+    );
+
+    if (sourceListIndex === -1 || targetListIndex === -1) return;
+
+    const sourceList = board.lists[sourceListIndex];
+    const targetList = board.lists[targetListIndex];
+
+    if (sourceList === targetList) {
+      // 같은 리스트 내에서 카드 순서 변경
+      const updatedCards = arrayMove(
+        sourceList.cards,
+        sourceList.cards.findIndex((card) => card.id === active.id),
+        targetList.cards.findIndex((card) => card.id === over.id)
+      );
+
+      const updatedLists = [...board.lists];
+      updatedLists[sourceListIndex] = { ...sourceList, cards: updatedCards };
+
+      setBoard({ lists: updatedLists });
+    } else {
+      // 다른 리스트로 카드 이동
+      const sourceCards = [...sourceList.cards];
+      const targetCards = [...targetList.cards];
+      const [movedCard] = sourceCards.splice(
+        sourceList.cards.findIndex((card) => card.id === active.id),
+        1
+      );
+
+      targetCards.splice(
+        targetList.cards.findIndex((card) => card.id === over.id),
+        0,
+        movedCard
+      );
+
+      const updatedLists = [...board.lists];
+      updatedLists[sourceListIndex] = { ...sourceList, cards: sourceCards };
+      updatedLists[targetListIndex] = { ...targetList, cards: targetCards };
+
+      setBoard({ lists: updatedLists });
+    }
   };
 
   return (
-    <div>
-      <p>{getDisplayText()}</p>
-    </div>
-  );
-};
-
-const MainPage: React.FC = () => {
-  const navigate = useNavigate();
-  const [token, setToken] = useRecoilState(tokenState);
-  const mode = useRecoilValue(modeState);
-
-  const [chatRoomList, setChatRoomList] = useState<
-    ChattingRoomListInterface[] | null
-  >(null);
-
-  // 채팅방 리스트를 가져오는 함수
-  async function fetchChattingRooms() {
-    const result = await GetChattingRoomFunction({ token });
-    if (result.code === "0000" && result.chatRoomData) {
-      setChatRoomList(result.chatRoomData);
-      return true;
-    }
-    if (result.code === "CRL101") {
-      return false; // 토큰 만료
-    }
-    return null; // 기타 오류
-  }
-
-  // 토큰을 갱신하고 다시 요청하는 함수
-  async function handleTokenExpiration() {
-    const result = await GetRefreshTokenFunction({ token });
-    if (result.code === "0000") {
-      setToken({
-        accessToken: result.accessToken,
-        refreshToken: result.refreshToken,
-      });
-      const retryResult = await fetchChattingRooms(); // 토큰 갱신 후 재요청
-      if (retryResult) return;
-    }
-    alert("로그인이 만료되었습니다. 다시 로그인해 주세요.");
-    navigate("/login");
-  }
-
-  // 채팅방 정보를 가져오는 메인 함수
-  async function GetChattingRoom() {
-    const success = await fetchChattingRooms();
-    if (success === false) {
-      await handleTokenExpiration();
-    }
-  }
-
-  useEffect(() => {
-    GetChattingRoom();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  if (chatRoomList) {
-    return (
-      <div
-        className={`container ${mode ? "light_container" : "dark_container"}`}
-      >
-        <NavigationBar />
+    <DndContext onDragEnd={handleDragEnd}>
+      <div className={styles.outer_container}>
         <div className={styles.main_container}>
-          <p className={styles.title}>채팅</p>
-          {chatRoomList.map(
-            (room: ChattingRoomListInterface, index: number) => {
-              return (
-                <div
-                  className={styles.chatting_room}
-                  onClick={() => {
-                    navigate(`/chatting/${room.chatRoomSeq}`);
-                  }}
-                  key={index}
-                >
-                  <div className={styles.contents}>
-                    <div className={styles.image}></div>
-                    <div className={styles.inner_contents}>
-                      <p className={styles.room_name}>{room.chatRoomName}</p>
-                      <p className={styles.preview}>
-                        미리보기 대화입니다. 미리보기 대화입니다.
-                      </p>
-                    </div>
-                  </div>
-                  <div className={styles.information}>
-                    <DateRender modDate={room.modDate} />
-                  </div>
-                </div>
-              );
-            }
-          )}
+          {board.lists.map((list) => (
+            <SortableContext
+              key={list.id}
+              items={list.cards.map((card) => card.id)}
+              strategy={verticalListSortingStrategy}
+            >
+              <ListComponent list={list} />
+            </SortableContext>
+          ))}
         </div>
       </div>
-    );
-  }
-
-  return <div>chatting</div>;
+    </DndContext>
+  );
 };
 
 export default MainPage;

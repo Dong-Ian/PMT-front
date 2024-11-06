@@ -14,9 +14,3 @@ export const tokenState = atom({
   default: { accessToken: "", refreshToken: "" },
   effects_UNSTABLE: [persistAtom],
 });
-
-export const modeState = atom({
-  key: "modeState",
-  default: false,
-  effects_UNSTABLE: [persistAtom],
-});
