@@ -1,4 +1,3 @@
-// GridLayoutExample.tsx
 import React, { useState } from "react";
 import GridLayout, { Layout } from "react-grid-layout";
 import "react-grid-layout/css/styles.css";
@@ -55,6 +54,7 @@ const MainPage: React.FC = () => {
 
   const [layout, setLayout] = useState<Layout[]>(initialLayout);
   const [counter, setCounter] = useState(4);
+  const [editMode, setEditMode] = useState<string | null>(null);
 
   const addItem = () => {
     const maxY = layout.reduce(
@@ -135,7 +135,8 @@ const MainPage: React.FC = () => {
   };
 
   const modify = ({ index }: { index: string }) => {
-    console.log(index);
+    const [type, idx] = index.split("-");
+    setEditMode(idx);
   };
 
   return (
@@ -143,7 +144,6 @@ const MainPage: React.FC = () => {
       <button onClick={addItem} style={{ marginBottom: "10px" }}>
         + Add Item
       </button>
-
       <button onClick={addMemo} style={{ marginBottom: "10px" }}>
         + Add Memo
       </button>
@@ -160,30 +160,89 @@ const MainPage: React.FC = () => {
         preventCollision={true}
         isDraggable={true}
         isResizable={true}
-        margin={[70, 70]}
-        containerPadding={[20, 20]}
+        margin={[30, 30]}
+        containerPadding={[10, 10]}
         compactType={null}
         onLayoutChange={(newLayout) => setLayout(newLayout)}
       >
         {layout.map((item) => {
           const [type, index] = item.i.split("-");
 
+          if (type === "todo") {
+            return (
+              <div
+                key={item.i}
+                style={{
+                  border: "1px solid black",
+                  padding: "10px",
+                  backgroundColor: "white",
+                  borderRadius: "8px",
+                  boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
+                }}
+              >
+                {editMode === index ? (
+                  <button onClick={() => setEditMode(null)}>완료</button>
+                ) : (
+                  <button onClick={() => modify({ index: item.i })}>
+                    수정
+                  </button>
+                )}
+                {editMode === index ? (
+                  <div>todo 수정</div>
+                ) : (
+                  <div>todo 내용</div>
+                )}
+              </div>
+            );
+          }
+
+          if (type === "memo") {
+            return (
+              <div
+                key={item.i}
+                style={{
+                  border: "1px solid black",
+                  padding: "10px",
+                  backgroundColor: "white",
+                  borderRadius: "8px",
+                  boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
+                }}
+              >
+                {editMode === index ? (
+                  <button onClick={() => setEditMode(null)}>완료</button>
+                ) : (
+                  <button onClick={() => modify({ index: item.i })}>
+                    수정
+                  </button>
+                )}
+                {editMode === index ? (
+                  <div>
+                    <textarea></textarea>
+                  </div>
+                ) : (
+                  <div>memo 내용</div>
+                )}
+              </div>
+            );
+          }
+
           return (
             <div
               key={item.i}
               style={{
                 border: "1px solid black",
-                padding: "30px",
+                padding: "10px",
                 backgroundColor: "white",
                 borderRadius: "8px",
                 boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
               }}
             >
-              <button onClick={() => modify({ index: item.i })}>수정</button>
-              <h4>Item {item.i}</h4>
-              {type === "todo" && <div>todo {index}</div>}
-              {type === "memo" && <div>memo {index}</div>}
-              {type === "item" && <div>item {index}</div>}
+              {editMode === index ? (
+                <button onClick={() => setEditMode(null)}>완료</button>
+              ) : (
+                <button onClick={() => modify({ index: item.i })}>수정</button>
+              )}
+              {editMode === index ? <div>item 수정</div> : <div>item 내용</div>}
             </div>
           );
         })}
