@@ -1,4 +1,4 @@
-import { SignUpFunctionProps } from "../type/SignUpType";
+import { SignUpFunctionProps } from "../type/SignUp.type";
 
 export default async function SignUpFunction({
   name,
