@@ -4,15 +4,17 @@ import LoginPage from "./Login/page/LoginPage";
 import SignUpPage from "./SignUp/page/SignUpPage";
 import MainPage from "./Main/page/MainPage";
 import Projectpage from "./Project/page/ProjectPage";
+import CreateProjectPage from "./Project/page/CreateProjectPage";
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<LoginPage />} />
-        <Route path="/main" element={<MainPage />} />
-        <Route path="/project" element={<Projectpage />} />
+        <Route path="/" element={<LoginPage />} />{" "}
         <Route path="/signup" element={<SignUpPage />} />
+        <Route path="/main" element={<MainPage />} />
+        <Route path="/create-project" element={<CreateProjectPage />} />
+        <Route path="/project" element={<Projectpage />} />
       </Routes>
     </Router>
   );

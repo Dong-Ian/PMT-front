@@ -122,5 +122,7 @@ body {
   vertical-align: baseline;
   line-height: 1;
   overflow-x: hidden;
-  background: linear-gradient(to left, rgb(212, 209, 255), rgb(217, 227, 255));
+  /* background: linear-gradient(to left, rgb(212, 209, 255), rgb(217, 227, 255)); */
+  /* background-color: lightblue; */
+  background: linear-gradient(to left, rgb(173, 216, 230), rgb(211, 211, 211));
 }
