@@ -12,6 +12,7 @@ const CreateProjectPage: React.FC = () => {
     value: string;
     label: string;
   } | null>(null);
+  console.log(projectType);
   const [inputValue, setInputValue] = useState("");
   const [inviteUsers, setInviteUsers] = useState<string[]>([]);
 
@@ -37,6 +38,17 @@ const CreateProjectPage: React.FC = () => {
       "현재까지의 내용은 저장되지 않습니다.\n그래도 취소하시겠습니끼?"
     );
     if (result) navigation("/main");
+  }
+
+  function CreateProject() {
+    if (projectTitle === "") {
+      alert("프로젝트 제목을 입력해주세요.");
+      return;
+    }
+    const result = window.confirm("프로젝트를 생성하시겠습니까?");
+    if (result) {
+      alert("생성되었습니다.");
+    }
   }
 
   return (
@@ -71,7 +83,7 @@ const CreateProjectPage: React.FC = () => {
         </div>
         <div className={styles.button}>
           <Button
-            onClick={() => console.log("hello")}
+            onClick={CreateProject}
             variant="filled"
             color="rgb(173, 216, 230)"
           >
