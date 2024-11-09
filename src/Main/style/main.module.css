@@ -4,6 +4,7 @@
   align-items: center;
   padding: 30px;
 }
+
 .main_container {
   width: calc(100% - 20px);
   min-height: 92vh;
@@ -17,7 +18,7 @@
   padding: 30px;
   display: flex;
   flex-wrap: wrap;
-  gap: 30px;
+  gap: 35px;
 }
 .title {
   margin-top: 30px;
@@ -27,7 +28,8 @@
 }
 
 .create_button {
-  border: 1px solid black;
+  border: 1px solid lightgray;
+
   border-radius: 10px;
   display: flex;
   flex-direction: column;
