@@ -1,18 +1,25 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useRecoilValue } from "recoil";
+import { tokenState } from "../../Utils/Atom/Atom";
+
 import styles from "../style/project.module.css";
+
 import Select from "react-select";
 import { TextInput, TagsInput, Button } from "@mantine/core";
-import { useNavigate } from "react-router-dom";
+
+import CreateProjectFunction from "../function/CreateProjectFunction";
 
 const CreateProjectPage: React.FC = () => {
   const navigation = useNavigate();
+  const token = useRecoilValue(tokenState);
 
   const [projectTitle, setProjectTitle] = useState<string>("");
   const [projectType, setProjectType] = useState<{
     value: string;
     label: string;
   } | null>(null);
-  console.log(projectType);
+
   const [inputValue, setInputValue] = useState("");
   const [inviteUsers, setInviteUsers] = useState<string[]>([]);
 
@@ -40,14 +47,26 @@ const CreateProjectPage: React.FC = () => {
     if (result) navigation("/main");
   }
 
-  function CreateProject() {
+  async function CreateProject() {
     if (projectTitle === "") {
       alert("프로젝트 제목을 입력해주세요.");
       return;
     }
+
     const result = window.confirm("프로젝트를 생성하시겠습니까?");
     if (result) {
-      alert("생성되었습니다.");
+      const result = await CreateProjectFunction({
+        token,
+        title: projectTitle,
+        inviteUsers: inviteUsers,
+        projectType: projectType,
+      });
+
+      if (result.code === "0000") {
+        alert("생성되었습니다.");
+        navigation("/project");
+        return;
+      }
     }
   }
 

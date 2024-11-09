@@ -14,7 +14,7 @@ export default async function CreateProjectFunction({
     body: JSON.stringify({
       title: title,
       inviteUsers: inviteUsers,
-      projectType: projectType,
+      projectType: projectType?.value,
     }),
   });
 
