@@ -3,6 +3,8 @@ import { useSearchParams } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { tokenState } from "../../Utils/Atom/Atom";
 
+import styles from "../style/project.module.css";
+
 import GridLayout, { Layout } from "react-grid-layout";
 import "react-grid-layout/css/styles.css";
 import "react-resizable/css/styles.css";
@@ -113,7 +115,7 @@ const ProjectPage: React.FC = () => {
   }, []);
 
   return (
-    <div style={{ overflowX: "auto", height: "100vh" }}>
+    <div className={styles.project_outer_container}>
       <button onClick={addMemo} style={{ marginBottom: "10px" }}>
         + Add Memo
       </button>
@@ -136,16 +138,7 @@ const ProjectPage: React.FC = () => {
           const [type, index] = item.i.split("-");
 
           return (
-            <div
-              key={item.i}
-              style={{
-                border: "1px solid black",
-                padding: "10px",
-                backgroundColor: "white",
-                borderRadius: "8px",
-                boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
-              }}
-            >
+            <div key={item.i} className={styles.component_box}>
               {editMode === index ? (
                 <button
                   onMouseDown={(e) => e.stopPropagation()}
