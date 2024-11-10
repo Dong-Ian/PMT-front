@@ -59,6 +59,7 @@
 .project_outer_container {
   overflow-x: auto;
   height: 100vh;
+  padding: 0 30px;
 }
 
 .component_box {
