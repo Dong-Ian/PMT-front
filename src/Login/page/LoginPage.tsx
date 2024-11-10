@@ -45,7 +45,7 @@ const LoginPage: React.FC = () => {
   };
 
   return (
-    <div>
+    <div style={{ backgroundColor: "white", height: "100vh" }}>
       <p className={styles.title}>PMT</p>
 
       <form className={styles.login_box} method="post" onSubmit={Login}>

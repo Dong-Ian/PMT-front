@@ -48,7 +48,7 @@
   height: 45px;
   border-radius: 5px;
   border: 1px solid rgb(124, 118, 118);
-  background: linear-gradient(to right, rgb(212, 168, 254), rgb(146, 168, 255));
+  background: linear-gradient(to left, rgb(173, 216, 230), rgb(211, 211, 211));
   color: white;
   font-weight: 1000;
   font-size: 15px;
