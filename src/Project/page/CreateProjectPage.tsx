@@ -61,9 +61,10 @@ const CreateProjectPage: React.FC = () => {
         projectType: projectType,
       });
 
-      if (result.code === "USER0000") {
+      if (result.code === "0000") {
         alert("프로젝트가 생성되었습니다.");
-        navigation("/project");
+
+        navigation(`/project?projectSeq=${result.projectSeq}`);
         return;
       }
     }

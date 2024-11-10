@@ -139,7 +139,6 @@ const ProjectPage: React.FC = () => {
     const [type, idx] = index.split("-");
     setEditMode(idx);
   };
-  console.log(layout);
 
   return (
     <div style={{ overflowX: "auto", height: "100vh" }}>
