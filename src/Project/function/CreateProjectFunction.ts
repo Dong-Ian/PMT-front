@@ -3,7 +3,6 @@ import { CreateProjectFunctionProps } from "../type/Project.type";
 export default async function CreateProjectFunction({
   token,
   title,
-  inviteUsers,
   projectType,
 }: CreateProjectFunctionProps) {
   const result = await fetch(`${process.env.REACT_APP_API}/project/create`, {
@@ -13,7 +12,6 @@ export default async function CreateProjectFunction({
     },
     body: JSON.stringify({
       title: title,
-      inviteUsers: inviteUsers,
       projectType: projectType?.value,
     }),
   });

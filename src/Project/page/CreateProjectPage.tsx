@@ -58,12 +58,11 @@ const CreateProjectPage: React.FC = () => {
       const result = await CreateProjectFunction({
         token,
         title: projectTitle,
-        inviteUsers: inviteUsers,
         projectType: projectType,
       });
 
-      if (result.code === "0000") {
-        alert("생성되었습니다.");
+      if (result.code === "USER0000") {
+        alert("프로젝트가 생성되었습니다.");
         navigation("/project");
         return;
       }
