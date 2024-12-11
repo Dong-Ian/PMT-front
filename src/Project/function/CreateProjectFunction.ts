@@ -11,7 +11,7 @@ export default async function CreateProjectFunction({
       Authorization: `Bearer ${token.accessToken}`,
     },
     body: JSON.stringify({
-      title: title,
+      projectName: title,
       projectType: projectType?.value,
     }),
   });

@@ -6,7 +6,7 @@ import { tokenState } from "../../Utils/Atom/Atom";
 import styles from "../style/project.module.css";
 
 import Select from "react-select";
-import { TextInput, TagsInput, Button } from "@mantine/core";
+import { TextInput, Button } from "@mantine/core";
 
 import CreateProjectFunction from "../function/CreateProjectFunction";
 
@@ -21,7 +21,6 @@ const CreateProjectPage: React.FC = () => {
   } | null>(null);
 
   const [inputValue, setInputValue] = useState("");
-  const [inviteUsers, setInviteUsers] = useState<string[]>([]);
 
   const options = [
     { value: "개인", label: "개인 프로젝트" },
@@ -85,11 +84,11 @@ const CreateProjectPage: React.FC = () => {
             />
           </div>
 
-          <TagsInput
+          {/* <TagsInput
             value={inviteUsers}
             onChange={setInviteUsers}
             placeholder="초대할 유저 아이디를 입력하고 Enter 키를 눌러 추가하세요"
-          />
+          /> */}
 
           <Select
             options={options}
