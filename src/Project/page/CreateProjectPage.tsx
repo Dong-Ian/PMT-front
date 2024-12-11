@@ -66,6 +66,11 @@ const CreateProjectPage: React.FC = () => {
         navigation(`/project?projectSeq=${result.projectSeq}`);
         return;
       }
+
+      if (result.status === 500) {
+        alert("서버에 오류가 발생했습니다.");
+        return;
+      }
     }
   }
 
