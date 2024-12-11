@@ -1,9 +1,22 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styles from "../style/main.module.css";
 import CreateProjectButton from "../component/CreateProjectButton";
 import PreviewProject from "../component/PreviewProject";
+import { useRecoilValue } from "recoil";
+import { tokenState } from "../../Utils/Atom/Atom";
+import GetProjectListFunction from "../function/GetProjectListFunction";
 
 const MainPage: React.FC = () => {
+  const token = useRecoilValue(tokenState);
+
+  async function GetProjectList() {
+    const result = await GetProjectListFunction({ token });
+  }
+
+  useEffect(() => {
+    GetProjectList();
+  }, []);
+
   return (
     <div className={styles.outer_container}>
       <div className={styles.main_container}>
