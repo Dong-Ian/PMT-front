@@ -5,7 +5,6 @@ export default async function CreateProjectFunction({
   title,
   projectType,
 }: CreateProjectFunctionProps) {
-  console.log(title, projectType);
   const result = await fetch(`${process.env.REACT_APP_API}/project/create`, {
     method: "POST",
     headers: {
