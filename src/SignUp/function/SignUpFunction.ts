@@ -5,6 +5,7 @@ export default async function SignUpFunction({
   email,
   password,
 }: SignUpFunctionProps) {
+  console.log(name, email, password);
   const result = await fetch(`${process.env.REACT_APP_API}/user/signup`, {
     method: "POST",
     body: JSON.stringify({

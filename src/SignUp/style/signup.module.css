@@ -1,0 +1,15 @@
+.signup_box {
+  border: 1px solid white;
+  border-radius: 10px;
+  background-color: white;
+  width: 90%;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  height: 500px;
+  gap: 30px;
+  margin: auto;
+  align-items: center;
+  padding-top: 100px;
+  margin-top: 150px;
+}
