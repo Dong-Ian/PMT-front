@@ -58,7 +58,7 @@
 .signup_button {
   background-color: transparent;
   border: none;
-  margin: 30px auto;
-  color: white;
+  margin: 15px auto;
   text-decoration: underline;
+  font-size: 14px;
 }
