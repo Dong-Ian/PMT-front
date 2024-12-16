@@ -11,3 +11,14 @@ export interface CreateProjectFunctionProps extends TokenProps {
 export interface GetComponentListFunctionProps extends TokenProps {
   projectSeq: string;
 }
+
+export interface ComponentProps extends TokenProps {
+  projectSeq: string;
+  componentName: string;
+  componentData: string;
+  componentX: string;
+  componentY: string;
+  componentWidth: string;
+  componentHeight: string;
+  componentType: string;
+}
