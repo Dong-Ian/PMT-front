@@ -54,7 +54,10 @@ const LoginPage: React.FC = () => {
         <input className={styles.login_button} type="submit" value="로그인" />
         <button
           className={styles.signup_button}
-          onClick={() => navigate("/signup")}
+          onClick={(e) => {
+            e.preventDefault();
+            navigate("/signup");
+          }}
         >
           회원이 아니신가요?
         </button>
