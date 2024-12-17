@@ -14,64 +14,16 @@ import GetComponentListFunction from "../function/GetComponentListFunction";
 import CreateComponentFunction from "../function/CreateComponentFunction";
 
 const ProjectPage: React.FC = () => {
-  const initialLayout: Layout[] = [
-    {
-      i: "item-1",
-      x: 0,
-      y: 0,
-      w: 3,
-      h: 3,
-      maxH: 10,
-      maxW: 10,
-      minH: 2,
-      minW: 3,
-      isResizable: true,
-      isDraggable: true,
-      isBounded: false,
-      resizeHandles: ["se", "sw"],
-    },
-    {
-      i: "item-2",
-      x: 3,
-      y: 0,
-      w: 3,
-      h: 3,
-      maxH: 10,
-      maxW: 10,
-      minH: 2,
-      minW: 3,
-      isResizable: true,
-      isDraggable: true,
-      isBounded: false,
-      resizeHandles: ["se", "sw"],
-    },
-    {
-      i: "item-3",
-      x: 6,
-      y: 0,
-      w: 3,
-      h: 3,
-      maxH: 10,
-      maxW: 10,
-      minH: 2,
-      minW: 3,
-      isResizable: true,
-      isDraggable: true,
-      isBounded: false,
-      resizeHandles: ["se", "sw"],
-    },
-  ];
-
   const [searchParams] = useSearchParams();
   const projectSeq = searchParams.get("projectSeq");
-
   const token = useRecoilValue(tokenState);
 
-  const [layout, setLayout] = useState<Layout[]>(initialLayout);
-  const [counter, setCounter] = useState(4);
+  const [layout, setLayout] = useState<Layout[]>([]);
+  const [counter, setCounter] = useState(0);
   const [editMode, setEditMode] = useState<string | null>(null);
 
   const addMemo = () => {
+    console.log(counter);
     const maxY = layout.reduce(
       (max, item) => Math.max(max, item.y + item.h),
       0
@@ -108,6 +60,26 @@ const ProjectPage: React.FC = () => {
         token: token,
         projectSeq: projectSeq,
       });
+
+      if (result.result) {
+        const layouts = result.result.map((item: any) => ({
+          i: item.componentName,
+          x: Number(item.componentX),
+          y: Number(item.componentY),
+          w: Number(item.componentWidth),
+          h: Number(item.componentHeight),
+          maxH: 10,
+          maxW: 10,
+          minH: 2,
+          minW: 3,
+          isResizable: true,
+          isDraggable: true,
+          isBounded: false,
+          resizeHandles: ["se", "sw"],
+        }));
+
+        setLayout(layouts);
+      }
     }
   }
 
@@ -126,12 +98,33 @@ const ProjectPage: React.FC = () => {
           type: "memo",
         },
       });
+
+      if (result.code === "COMPONENT0000") {
+        GetComponentList();
+      }
     }
   }
+
+  const initializeCounter = (layouts: Layout[]) => {
+    console.log(layouts);
+    const maxCounter = layouts.reduce((max, item) => {
+      const parts = item.i.split("-");
+      const num = Number(parts[parts.length - 1]) || 0;
+      return Math.max(max, num);
+    }, 0);
+
+    setCounter(maxCounter + 1);
+  };
 
   useEffect(() => {
     GetComponentList();
   }, []);
+
+  useEffect(() => {
+    if (layout.length > 0) {
+      initializeCounter(layout);
+    }
+  }, [layout]);
 
   return (
     <div className={styles.project_outer_container}>
