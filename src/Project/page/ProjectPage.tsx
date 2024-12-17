@@ -12,47 +12,49 @@ import "react-resizable/css/styles.css";
 import EditMemoComponent from "../component/EditMemoComponent";
 import GetComponentListFunction from "../function/GetComponentListFunction";
 import CreateComponentFunction from "../function/CreateComponentFunction";
+import MoveComponentFunction from "../function/MoveComponentFunction";
+import { LayoutInterface } from "../type/Project.type";
 
 const ProjectPage: React.FC = () => {
   const [searchParams] = useSearchParams();
   const projectSeq = searchParams.get("projectSeq");
   const token = useRecoilValue(tokenState);
 
-  const [layout, setLayout] = useState<Layout[]>([]);
+  const [layout, setLayout] = useState<LayoutInterface[]>([]);
   const [counter, setCounter] = useState(0);
   const [editMode, setEditMode] = useState<string | null>(null);
 
-  const addMemo = () => {
-    console.log(counter);
-    const maxY = layout.reduce(
-      (max, item) => Math.max(max, item.y + item.h),
-      0
-    );
+  // const addMemo = () => {
+  //   console.log(counter);
+  //   const maxY = layout.reduce(
+  //     (max, item) => Math.max(max, item.y + item.h),
+  //     0
+  //   );
 
-    const newItem: Layout = {
-      i: `memo-${counter}`,
-      x: 0,
-      y: maxY,
-      w: 3,
-      h: 3,
-      maxH: 10,
-      maxW: 10,
-      minH: 2,
-      minW: 3,
-      isResizable: true,
-      isDraggable: true,
-      isBounded: false,
-      resizeHandles: ["se", "sw"],
-    };
+  //   const newItem: Layout = {
+  //     i: `memo-${counter}`,
+  //     x: 0,
+  //     y: maxY,
+  //     w: 3,
+  //     h: 3,
+  //     maxH: 10,
+  //     maxW: 10,
+  //     minH: 2,
+  //     minW: 3,
+  //     isResizable: true,
+  //     isDraggable: true,
+  //     isBounded: false,
+  //     resizeHandles: ["se", "sw"],
+  //   };
 
-    setLayout([...layout, newItem]);
-    setCounter(counter + 1);
-  };
+  //   setLayout([...layout, newItem]);
+  //   setCounter(counter + 1);
+  // };
 
-  const modify = ({ index }: { index: string }) => {
-    const [type, idx] = index.split("-");
-    setEditMode(idx);
-  };
+  // const modify = ({ index }: { index: string }) => {
+  //   const [type, idx] = index.split("-");
+  //   setEditMode(idx);
+  // };
 
   async function GetComponentList() {
     if (projectSeq) {
@@ -63,19 +65,25 @@ const ProjectPage: React.FC = () => {
 
       if (result.result) {
         const layouts = result.result.map((item: any) => ({
-          i: item.componentName,
-          x: Number(item.componentX),
-          y: Number(item.componentY),
-          w: Number(item.componentWidth),
-          h: Number(item.componentHeight),
-          maxH: 10,
-          maxW: 10,
-          minH: 2,
-          minW: 3,
-          isResizable: true,
-          isDraggable: true,
-          isBounded: false,
-          resizeHandles: ["se", "sw"],
+          projectSeq: projectSeq,
+          componentSeq: item.componentSeq,
+          componentName: item.componentName,
+          componentData: item.componentData,
+          layout: {
+            x: parseInt(item.componentX),
+            y: parseInt(item.componentY),
+            w: parseInt(item.componentWidth),
+            h: parseInt(item.componentHeight),
+            i: item.componentName,
+            maxH: 10,
+            maxW: 10,
+            minH: 2,
+            minW: 3,
+            isResizable: true,
+            isDraggable: true,
+            isBounded: false,
+            resizeHandles: ["se", "sw"],
+          },
         }));
 
         setLayout(layouts);
@@ -105,36 +113,61 @@ const ProjectPage: React.FC = () => {
     }
   }
 
-  const initializeCounter = (layouts: Layout[]) => {
-    console.log(layouts);
-    const maxCounter = layouts.reduce((max, item) => {
-      const parts = item.i.split("-");
-      const num = Number(parts[parts.length - 1]) || 0;
-      return Math.max(max, num);
-    }, 0);
+  // const initializeCounter = (layouts: LayoutInterface[]) => {
+  //   const maxCounter = layouts.reduce((max, item) => {
+  //     const parts = item.i.split("-");
+  //     const num = Number(parts[parts.length - 1]) || 0;
+  //     return Math.max(max, num);
+  //   }, 0);
 
-    setCounter(maxCounter + 1);
-  };
+  //   setCounter(maxCounter + 1);
+  // };
+
+  // async function handleLayoutChange  (newLayout: Layout[])  {
+  //   const changedItem = newLayout.find((newItem) => {
+  //     const oldItem = layout.find((item) => item.i === newItem.i);
+  //     return (
+  //       oldItem &&
+  //       (oldItem.x !== newItem.x ||
+  //         oldItem.y !== newItem.y ||
+  //         oldItem.w !== newItem.w ||
+  //         oldItem.h !== newItem.h)
+  //     );
+  //   });
+
+  //   if (changedItem) {
+  //     console.log("Changed Layout Item:", changedItem);
+  //     const result = await MoveComponentFunction({token, item: {
+  //       x: changedItem.x.toString(),
+  //       y: changedItem.y.toString(),
+  //       h: changedItem.h.toString(),
+  //       w: changedItem.w.toString(),
+
+  //     },})
+  //   }
+
+  //   setLayout(newLayout);
+  // };
 
   useEffect(() => {
     GetComponentList();
   }, []);
 
-  useEffect(() => {
-    if (layout.length > 0) {
-      initializeCounter(layout);
-    }
-  }, [layout]);
+  // useEffect(() => {
+  //   if (layout.length > 0) {
+  //     initializeCounter(layout);
+  //   }
+  // }, [layout]);
 
   return (
     <div className={styles.project_outer_container}>
-      <button onClick={addMemo} style={{ marginBottom: "10px" }}>
+      {/* <button onClick={addMemo} style={{ marginBottom: "10px" }}>
         + Add Memo
-      </button>
+      </button> */}
 
       <GridLayout
         className="layout"
-        layout={layout}
+        layout={layout.map((item) => item.layout)}
         cols={12}
         rowHeight={30}
         width={1200}
@@ -144,19 +177,19 @@ const ProjectPage: React.FC = () => {
         margin={[30, 30]}
         containerPadding={[10, 10]}
         compactType={null}
-        onLayoutChange={(newLayout) => setLayout(newLayout)}
+        // onLayoutChange={handleLayoutChange}
       >
         {layout.map((item) => {
-          const [type, index] = item.i.split("-");
+          const [type, index] = item.layout.i.split("-");
 
           return (
-            <div key={item.i} className={styles.component_box}>
+            <div key={item.layout.i} className={styles.component_box}>
               {editMode === index ? (
                 <button
                   onMouseDown={(e) => e.stopPropagation()}
                   onClick={() => {
                     setEditMode(null);
-                    CreateComponent(item);
+                    CreateComponent(item.layout);
                   }}
                 >
                   완료
@@ -164,7 +197,7 @@ const ProjectPage: React.FC = () => {
               ) : (
                 <button
                   onMouseDown={(e) => e.stopPropagation()}
-                  onClick={() => modify({ index: item.i })}
+                  // onClick={() => modify({ index: item.layout.i })}
                 >
                   수정
                 </button>
@@ -174,7 +207,7 @@ const ProjectPage: React.FC = () => {
                   <EditMemoComponent />
                 </div>
               ) : (
-                <div>memo 내용</div>
+                <div>{item.componentData}</div>
               )}
             </div>
           );
