@@ -11,6 +11,7 @@ import "react-resizable/css/styles.css";
 
 import EditMemoComponent from "../component/EditMemoComponent";
 import GetComponentListFunction from "../function/GetComponentListFunction";
+import CreateComponentFunction from "../function/CreateComponentFunction";
 
 const ProjectPage: React.FC = () => {
   const initialLayout: Layout[] = [
@@ -110,6 +111,24 @@ const ProjectPage: React.FC = () => {
     }
   }
 
+  async function CreateComponent(item: Layout) {
+    if (projectSeq) {
+      const result = await CreateComponentFunction({
+        token,
+        item: {
+          x: item.x.toString(),
+          y: item.y.toString(),
+          h: item.h.toString(),
+          w: item.w.toString(),
+          projectSeq: projectSeq,
+          i: item.i,
+          data: "hello",
+          type: "memo",
+        },
+      });
+    }
+  }
+
   useEffect(() => {
     GetComponentList();
   }, []);
@@ -142,7 +161,10 @@ const ProjectPage: React.FC = () => {
               {editMode === index ? (
                 <button
                   onMouseDown={(e) => e.stopPropagation()}
-                  onClick={() => setEditMode(null)}
+                  onClick={() => {
+                    setEditMode(null);
+                    CreateComponent(item);
+                  }}
                 >
                   완료
                 </button>

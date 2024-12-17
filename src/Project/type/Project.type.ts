@@ -13,12 +13,14 @@ export interface GetComponentListFunctionProps extends TokenProps {
 }
 
 export interface ComponentProps extends TokenProps {
-  projectSeq: string;
-  componentName: string;
-  componentData: string;
-  componentX: string;
-  componentY: string;
-  componentWidth: string;
-  componentHeight: string;
-  componentType: string;
+  item: {
+    projectSeq: string;
+    w: string;
+    h: string;
+    x: string;
+    y: string;
+    i: string;
+    data: string;
+    type: string;
+  };
 }
