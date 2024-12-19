@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { tokenState } from "../../Utils/Atom/Atom";
@@ -14,17 +14,19 @@ import GetComponentListFunction from "../function/GetComponentListFunction";
 import CreateComponentFunction from "../function/CreateComponentFunction";
 import MoveComponentFunction from "../function/MoveComponentFunction";
 import { LayoutInterface } from "../type/Project.type";
+import EditComponentDataFunction from "../function/EditComponentDataFunction";
 
 const ProjectPage: React.FC = () => {
   const [searchParams] = useSearchParams();
   const projectSeq = searchParams.get("projectSeq");
   const token = useRecoilValue(tokenState);
+  const previousLayoutRef = useRef<LayoutInterface[]>([]);
 
   const [layout, setLayout] = useState<LayoutInterface[]>([]);
   const [counter, setCounter] = useState(0);
   const [editMode, setEditMode] = useState<string | null>(null);
 
-  const addMemo = () => {
+  async function addMemo() {
     const maxY = layout.reduce(
       (max, item) => Math.max(max, item.layout.y + item.layout.h),
       0
@@ -52,22 +54,85 @@ const ProjectPage: React.FC = () => {
       },
     };
 
-    setLayout([...layout, newItem]);
+    const updatedLayout = [...layout, newItem];
+    setLayout(updatedLayout);
     setCounter((prev) => prev + 1);
-  };
 
-  const modify = ({ index }: { index: string }) => {
+    await CreateComponent(newItem.layout);
+  }
+
+  function modify({ index }: { index: string }) {
     const [type, idx] = index.split("-");
     setEditMode(idx);
-  };
+  }
 
-  const handleInputChange = (index: string, value: string) => {
+  function handleInputChange(index: string, value: string) {
     setLayout((prevLayout) =>
       prevLayout.map((item) =>
         item.layout.i === index ? { ...item, componentData: value } : item
       )
     );
+  }
+
+  const initializeCounter = (layouts: LayoutInterface[]) => {
+    const maxCounter = layouts.reduce((max, item) => {
+      const parts = item.layout.i.split("-");
+      const num = Number(parts[parts.length - 1]) || 0;
+      return Math.max(max, num);
+    }, 0);
+
+    setCounter(maxCounter + 1);
   };
+
+  async function handleLayoutChange(newLayout: Layout[]) {
+    const mappedLayout: LayoutInterface[] = layout.map((item) => {
+      const updatedLayout = newLayout.find(
+        (newItem) => newItem.i === item.layout.i
+      );
+
+      if (updatedLayout) {
+        return {
+          ...item,
+          layout: {
+            ...item.layout,
+            x: updatedLayout.x,
+            y: updatedLayout.y,
+            w: updatedLayout.w,
+            h: updatedLayout.h,
+          },
+        };
+      }
+      return item;
+    });
+
+    const changedItem = mappedLayout.find((newItem, index) => {
+      const oldItem = previousLayoutRef.current[index];
+      return (
+        oldItem &&
+        (oldItem.layout.x !== newItem.layout.x ||
+          oldItem.layout.y !== newItem.layout.y ||
+          oldItem.layout.w !== newItem.layout.w ||
+          oldItem.layout.h !== newItem.layout.h)
+      );
+    });
+
+    if (changedItem) {
+      const result = await MoveComponentFunction({
+        token,
+        item: {
+          x: changedItem.layout.x.toString(),
+          y: changedItem.layout.y.toString(),
+          w: changedItem.layout.w.toString(),
+          h: changedItem.layout.h.toString(),
+        },
+      });
+
+      if (result.code === "0000") {
+        GetComponentList();
+      }
+    }
+    previousLayoutRef.current = mappedLayout;
+  }
 
   async function GetComponentList() {
     if (projectSeq) {
@@ -105,10 +170,34 @@ const ProjectPage: React.FC = () => {
   }
 
   async function CreateComponent(item: Layout) {
-    const currentItem = layout.find((l) => l.layout.i === item.i);
-    console.log(currentItem);
-    if (projectSeq && currentItem) {
+    if (projectSeq) {
       const result = await CreateComponentFunction({
+        token,
+        item: {
+          x: item.x.toString(),
+          y: item.y.toString(),
+          h: item.h.toString(),
+          w: item.w.toString(),
+          projectSeq: projectSeq,
+          i: item.i,
+          data: "",
+          type: "memo",
+        },
+      });
+
+      if (result.code === "COMPONENT0000") {
+        GetComponentList();
+      }
+    }
+  }
+
+  async function EditComponentData(item: Layout) {
+    const currentItem = layout.find((l) => l.layout.i === item.i) || {
+      componentData: "",
+    };
+
+    if (projectSeq) {
+      const result = await EditComponentDataFunction({
         token,
         item: {
           x: item.x.toString(),
@@ -122,48 +211,10 @@ const ProjectPage: React.FC = () => {
         },
       });
 
-      if (result.code === "COMPONENT0000") {
+      if (result.code === "0000") {
         GetComponentList();
       }
     }
-  }
-
-  const initializeCounter = (layouts: LayoutInterface[]) => {
-    const maxCounter = layouts.reduce((max, item) => {
-      const parts = item.layout.i.split("-");
-      const num = Number(parts[parts.length - 1]) || 0;
-      return Math.max(max, num);
-    }, 0);
-
-    setCounter(maxCounter + 1);
-  };
-
-  async function handleLayoutChange(newLayout: LayoutInterface[]) {
-    const changedItem = newLayout.find((newItem) => {
-      const oldItem = layout.find((item) => item.layout.i === newItem.layout.i);
-      return (
-        oldItem &&
-        (oldItem.layout.x !== newItem.layout.x ||
-          oldItem.layout.y !== newItem.layout.y ||
-          oldItem.layout.w !== newItem.layout.w ||
-          oldItem.layout.h !== newItem.layout.h)
-      );
-    });
-
-    if (changedItem) {
-      console.log("Changed Layout Item:", changedItem);
-      const result = await MoveComponentFunction({
-        token,
-        item: {
-          x: changedItem.layout.x.toString(),
-          y: changedItem.layout.y.toString(),
-          h: changedItem.layout.h.toString(),
-          w: changedItem.layout.w.toString(),
-        },
-      });
-    }
-
-    setLayout(newLayout);
   }
 
   useEffect(() => {
@@ -194,7 +245,7 @@ const ProjectPage: React.FC = () => {
         margin={[30, 30]}
         containerPadding={[10, 10]}
         compactType={null}
-        onLayoutChange={() => handleLayoutChange(layout)}
+        onLayoutChange={handleLayoutChange}
       >
         {layout.map((item) => {
           const [type, index] = item.layout.i.split("-");
@@ -206,7 +257,7 @@ const ProjectPage: React.FC = () => {
                   onMouseDown={(e) => e.stopPropagation()}
                   onClick={() => {
                     setEditMode(null);
-                    CreateComponent(item.layout);
+                    EditComponentData(item.layout);
                   }}
                 >
                   완료
