@@ -9,12 +9,13 @@ import GridLayout, { Layout } from "react-grid-layout";
 import "react-grid-layout/css/styles.css";
 import "react-resizable/css/styles.css";
 
-import EditMemoComponent from "../component/EditMemoComponent";
 import GetComponentListFunction from "../function/GetComponentListFunction";
 import CreateComponentFunction from "../function/CreateComponentFunction";
 import MoveComponentFunction from "../function/MoveComponentFunction";
-import { LayoutInterface } from "../type/Project.type";
 import EditComponentDataFunction from "../function/EditComponentDataFunction";
+
+import { LayoutInterface } from "../type/Project.type";
+import EditMemoComponent from "../component/EditMemoComponent";
 
 const ProjectPage: React.FC = () => {
   const [searchParams] = useSearchParams();

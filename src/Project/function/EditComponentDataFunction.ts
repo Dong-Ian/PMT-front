@@ -4,7 +4,6 @@ export default async function EditComponentDataFunction({
   token,
   item,
 }: ComponentProps) {
-  console.log(item.data);
   const result = await fetch(
     `${process.env.REACT_APP_API}/component/update/data`,
     {
@@ -14,6 +13,7 @@ export default async function EditComponentDataFunction({
       },
       body: JSON.stringify({
         projectSeq: item.projectSeq,
+        componentSeq: item.componentSeq,
         componentData: item.data,
       }),
     }

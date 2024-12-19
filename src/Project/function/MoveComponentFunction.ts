@@ -12,6 +12,7 @@ export default async function MoveComponentFunction({
         Authorization: `Bearer ${token.accessToken}`,
       },
       body: JSON.stringify({
+        projectSeq: item.projectSeq,
         componentSeq: item.componentSeq,
         componentX: item.x,
         componentY: item.y,
