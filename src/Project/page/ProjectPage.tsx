@@ -24,32 +24,37 @@ const ProjectPage: React.FC = () => {
   const [counter, setCounter] = useState(0);
   const [editMode, setEditMode] = useState<string | null>(null);
 
-  // const addMemo = () => {
-  //   console.log(counter);
-  //   const maxY = layout.reduce(
-  //     (max, item) => Math.max(max, item.y + item.h),
-  //     0
-  //   );
+  const addMemo = () => {
+    const maxY = layout.reduce(
+      (max, item) => Math.max(max, item.layout.y + item.layout.h),
+      0
+    );
 
-  //   const newItem: Layout = {
-  //     i: `memo-${counter}`,
-  //     x: 0,
-  //     y: maxY,
-  //     w: 3,
-  //     h: 3,
-  //     maxH: 10,
-  //     maxW: 10,
-  //     minH: 2,
-  //     minW: 3,
-  //     isResizable: true,
-  //     isDraggable: true,
-  //     isBounded: false,
-  //     resizeHandles: ["se", "sw"],
-  //   };
+    const newItem: LayoutInterface = {
+      projectSeq: projectSeq || "0",
+      componentSeq: "",
+      componentName: `memo-${counter}`,
+      componentData: "",
+      layout: {
+        i: `memo-${counter}`,
+        x: 0,
+        y: maxY,
+        w: 3,
+        h: 3,
+        maxH: 10,
+        maxW: 10,
+        minH: 2,
+        minW: 3,
+        isResizable: true,
+        isDraggable: true,
+        isBounded: false,
+        resizeHandles: ["se", "sw"],
+      },
+    };
 
-  //   setLayout([...layout, newItem]);
-  //   setCounter(counter + 1);
-  // };
+    setLayout([...layout, newItem]);
+    setCounter((prev) => prev + 1);
+  };
 
   // const modify = ({ index }: { index: string }) => {
   //   const [type, idx] = index.split("-");
@@ -161,9 +166,9 @@ const ProjectPage: React.FC = () => {
 
   return (
     <div className={styles.project_outer_container}>
-      {/* <button onClick={addMemo} style={{ marginBottom: "10px" }}>
+      <button onClick={addMemo} style={{ marginBottom: "10px" }}>
         + Add Memo
-      </button> */}
+      </button>
 
       <GridLayout
         className="layout"
