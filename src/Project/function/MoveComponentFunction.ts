@@ -23,6 +23,6 @@ export default async function MoveComponentFunction({
   );
 
   const res = await result.json();
-  console.log("move component function", res);
+
   return res;
 }

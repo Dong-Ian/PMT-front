@@ -119,10 +119,12 @@ const ProjectPage: React.FC = () => {
       );
     });
 
-    if (changedItem) {
+    if (changedItem && projectSeq) {
       const result = await MoveComponentFunction({
         token,
         item: {
+          projectSeq: projectSeq,
+          componentSeq: changedItem.componentSeq,
           x: changedItem.layout.x.toString(),
           y: changedItem.layout.y.toString(),
           w: changedItem.layout.w.toString(),
@@ -168,6 +170,7 @@ const ProjectPage: React.FC = () => {
         }));
 
         setLayout(layouts);
+        return;
       }
     }
   }
@@ -194,8 +197,8 @@ const ProjectPage: React.FC = () => {
     }
   }
 
-  async function EditComponentData(item: Layout) {
-    const currentItem = layout.find((l) => l.layout.i === item.i) || {
+  async function EditComponentData(item: LayoutInterface) {
+    const currentItem = layout.find((l) => l.layout.i === item.layout.i) || {
       componentData: "",
     };
 
@@ -203,12 +206,13 @@ const ProjectPage: React.FC = () => {
       const result = await EditComponentDataFunction({
         token,
         item: {
-          x: item.x.toString(),
-          y: item.y.toString(),
-          h: item.h.toString(),
-          w: item.w.toString(),
+          x: item.layout.x.toString(),
+          y: item.layout.y.toString(),
+          h: item.layout.h.toString(),
+          w: item.layout.w.toString(),
           projectSeq: projectSeq,
-          i: item.i,
+          componentSeq: item.componentSeq,
+          i: item.layout.i,
           data: currentItem.componentData || "",
           type: "memo",
         },
@@ -220,18 +224,19 @@ const ProjectPage: React.FC = () => {
     }
   }
 
-  async function DeleteComponent(item: Layout) {
+  async function DeleteComponent(item: LayoutInterface) {
     const res = window.confirm("컴포넌트를 삭제하시겠습니까?");
     if (res && projectSeq) {
       const result = await DeleteComponentFunction({
         token,
         item: {
-          x: item.x.toString(),
-          y: item.y.toString(),
-          h: item.h.toString(),
-          w: item.w.toString(),
+          x: item.layout.x.toString(),
+          y: item.layout.y.toString(),
+          h: item.layout.h.toString(),
+          w: item.layout.w.toString(),
           projectSeq: projectSeq,
-          i: item.i,
+          componentSeq: item.componentSeq,
+          i: item.layout.i,
           data: "",
           type: "memo",
         },
@@ -289,7 +294,7 @@ const ProjectPage: React.FC = () => {
                     onMouseDown={(e) => e.stopPropagation()}
                     onClick={() => {
                       setEditMode(null);
-                      EditComponentData(item.layout);
+                      EditComponentData(item);
                     }}
                   >
                     완료
@@ -304,7 +309,7 @@ const ProjectPage: React.FC = () => {
                 )}
                 <button
                   onMouseDown={(e) => e.stopPropagation()}
-                  onClick={() => DeleteComponent(item.layout)}
+                  onClick={() => DeleteComponent(item)}
                 >
                   삭제
                 </button>
