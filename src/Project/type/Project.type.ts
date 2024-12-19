@@ -47,3 +47,8 @@ export interface LayoutInterface {
     resizeHandles: ["se", "sw"];
   };
 }
+
+export interface InviteProps extends TokenProps {
+  projectSeq: string;
+  member: string;
+}
