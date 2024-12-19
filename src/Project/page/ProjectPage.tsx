@@ -64,7 +64,7 @@ const ProjectPage: React.FC = () => {
   }
 
   function modify({ index }: { index: string }) {
-    const [type, idx] = index.split("-");
+    const [, idx] = index.split("-");
     setEditMode(idx);
   }
 
@@ -244,6 +244,7 @@ const ProjectPage: React.FC = () => {
 
   useEffect(() => {
     GetComponentList();
+    // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
@@ -273,7 +274,7 @@ const ProjectPage: React.FC = () => {
         onLayoutChange={handleLayoutChange}
       >
         {layout.map((item) => {
-          const [type, index] = item.layout.i.split("-");
+          const [, index] = item.layout.i.split("-");
 
           return (
             <div key={item.layout.i} className={styles.component_box}>
