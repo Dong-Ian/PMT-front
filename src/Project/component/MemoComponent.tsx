@@ -1,15 +1,7 @@
 import React, { useState } from "react";
 
 import EditMemoComponent from "./EditMemoComponent";
-import { LayoutInterface } from "../type/Project.type";
-
-interface MemoComponentProps {
-  index: string;
-  item: LayoutInterface;
-  setLayout: React.Dispatch<React.SetStateAction<LayoutInterface[]>>;
-  EditComponentData: (item: LayoutInterface) => Promise<void>;
-  DeleteComponent: (item: LayoutInterface) => Promise<void>;
-}
+import { MemoComponentProps } from "../type/Project.type";
 
 const MemoComponent: React.FC<MemoComponentProps> = ({
   index,

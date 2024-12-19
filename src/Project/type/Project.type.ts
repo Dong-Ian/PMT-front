@@ -36,7 +36,7 @@ export interface LayoutInterface {
     y: number;
     w: number;
     h: number;
-    i: string;
+    i: string; // type-counter로 구성
     maxH: 10;
     maxW: 10;
     minH: 2;
@@ -46,6 +46,14 @@ export interface LayoutInterface {
     isBounded: false;
     resizeHandles: ["se", "sw"];
   };
+}
+
+export interface MemoComponentProps {
+  index: string;
+  item: LayoutInterface;
+  setLayout: React.Dispatch<React.SetStateAction<LayoutInterface[]>>;
+  EditComponentData: (item: LayoutInterface) => Promise<void>;
+  DeleteComponent: (item: LayoutInterface) => Promise<void>;
 }
 
 export interface InviteProps extends TokenProps {
