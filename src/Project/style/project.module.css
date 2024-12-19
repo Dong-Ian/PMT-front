@@ -96,4 +96,8 @@
     justify-content: center;
     gap: 10px;
   }
+
+  .invite_input {
+    margin-top: 5px;
+  }
 }
