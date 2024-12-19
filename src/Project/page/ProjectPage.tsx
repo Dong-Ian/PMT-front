@@ -107,25 +107,25 @@ const ProjectPage: React.FC = () => {
   async function CreateComponent(item: Layout) {
     const currentItem = layout.find((l) => l.layout.i === item.i);
     console.log(currentItem);
-    // if (projectSeq && currentItem) {
-    //   const result = await CreateComponentFunction({
-    //     token,
-    //     item: {
-    //       x: item.x.toString(),
-    //       y: item.y.toString(),
-    //       h: item.h.toString(),
-    //       w: item.w.toString(),
-    //       projectSeq: projectSeq,
-    //       i: item.i,
-    //       data: currentItem.componentData || "",
-    //       type: "memo",
-    //     },
-    //   });
+    if (projectSeq && currentItem) {
+      const result = await CreateComponentFunction({
+        token,
+        item: {
+          x: item.x.toString(),
+          y: item.y.toString(),
+          h: item.h.toString(),
+          w: item.w.toString(),
+          projectSeq: projectSeq,
+          i: item.i,
+          data: currentItem.componentData || "",
+          type: "memo",
+        },
+      });
 
-    //   if (result.code === "COMPONENT0000") {
-    //     GetComponentList();
-    //   }
-    // }
+      if (result.code === "COMPONENT0000") {
+        GetComponentList();
+      }
+    }
   }
 
   const initializeCounter = (layouts: LayoutInterface[]) => {
@@ -141,8 +141,6 @@ const ProjectPage: React.FC = () => {
   async function handleLayoutChange(newLayout: LayoutInterface[]) {
     const changedItem = newLayout.find((newItem) => {
       const oldItem = layout.find((item) => item.layout.i === newItem.layout.i);
-      console.log("old item:", oldItem);
-      console.log("new item:", newItem);
       return (
         oldItem &&
         (oldItem.layout.x !== newItem.layout.x ||
