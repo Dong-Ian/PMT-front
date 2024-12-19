@@ -16,6 +16,7 @@ import EditComponentDataFunction from "../function/EditComponentDataFunction";
 
 import { LayoutInterface } from "../type/Project.type";
 import EditMemoComponent from "../component/EditMemoComponent";
+import DeleteComponentFunction from "../function/DeleteComponentFunctionl";
 
 const ProjectPage: React.FC = () => {
   const [searchParams] = useSearchParams();
@@ -75,7 +76,7 @@ const ProjectPage: React.FC = () => {
     );
   }
 
-  const initializeCounter = (layouts: LayoutInterface[]) => {
+  function initializeCounter(layouts: LayoutInterface[]) {
     const maxCounter = layouts.reduce((max, item) => {
       const parts = item.layout.i.split("-");
       const num = Number(parts[parts.length - 1]) || 0;
@@ -83,7 +84,7 @@ const ProjectPage: React.FC = () => {
     }, 0);
 
     setCounter(maxCounter + 1);
-  };
+  }
 
   async function handleLayoutChange(newLayout: Layout[]) {
     const mappedLayout: LayoutInterface[] = layout.map((item) => {
@@ -218,6 +219,29 @@ const ProjectPage: React.FC = () => {
     }
   }
 
+  async function DeleteComponent(item: Layout) {
+    const res = window.confirm("컴포넌트를 삭제하시겠습니까?");
+    if (res && projectSeq) {
+      const result = await DeleteComponentFunction({
+        token,
+        item: {
+          x: item.x.toString(),
+          y: item.y.toString(),
+          h: item.h.toString(),
+          w: item.w.toString(),
+          projectSeq: projectSeq,
+          i: item.i,
+          data: "",
+          type: "memo",
+        },
+      });
+
+      if (result.code === "0000") {
+        GetComponentList();
+      }
+    }
+  }
+
   useEffect(() => {
     GetComponentList();
   }, []);
@@ -271,6 +295,12 @@ const ProjectPage: React.FC = () => {
                   수정
                 </button>
               )}
+              <button
+                onMouseDown={(e) => e.stopPropagation()}
+                onClick={() => DeleteComponent(item.layout)}
+              >
+                삭제
+              </button>
               {editMode === index ? (
                 <div>
                   <EditMemoComponent
