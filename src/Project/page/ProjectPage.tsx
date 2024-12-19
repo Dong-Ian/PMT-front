@@ -16,8 +16,8 @@ import EditComponentDataFunction from "../function/EditComponentDataFunction";
 import DeleteComponentFunction from "../function/DeleteComponentFunction";
 
 import { LayoutInterface } from "../type/Project.type";
-import EditMemoComponent from "../component/EditMemoComponent";
 import InviteMemberComponent from "../component/InviteMemberComponent";
+import MemoComponent from "../component/MemoComponent";
 
 const ProjectPage: React.FC = () => {
   const [searchParams] = useSearchParams();
@@ -27,7 +27,6 @@ const ProjectPage: React.FC = () => {
 
   const [layout, setLayout] = useState<LayoutInterface[]>([]);
   const [counter, setCounter] = useState(0);
-  const [editMode, setEditMode] = useState<string | null>(null);
 
   async function addMemo() {
     const maxY = layout.reduce(
@@ -62,19 +61,6 @@ const ProjectPage: React.FC = () => {
     setCounter((prev) => prev + 1);
 
     await CreateComponent(newItem.layout);
-  }
-
-  function modify({ index }: { index: string }) {
-    const [, idx] = index.split("-");
-    setEditMode(idx);
-  }
-
-  function handleInputChange(index: string, value: string) {
-    setLayout((prevLayout) =>
-      prevLayout.map((item) =>
-        item.layout.i === index ? { ...item, componentData: value } : item
-      )
-    );
   }
 
   function initializeCounter(layouts: LayoutInterface[]) {
@@ -284,50 +270,25 @@ const ProjectPage: React.FC = () => {
           compactType={null}
           onLayoutChange={handleLayoutChange}
         >
-          {layout.map((item) => {
-            const [, index] = item.layout.i.split("-");
-
-            return (
-              <div key={item.layout.i} className={styles.component_box}>
-                {editMode === index ? (
-                  <button
-                    onMouseDown={(e) => e.stopPropagation()}
-                    onClick={() => {
-                      setEditMode(null);
-                      EditComponentData(item);
-                    }}
-                  >
-                    완료
-                  </button>
-                ) : (
-                  <button
-                    onMouseDown={(e) => e.stopPropagation()}
-                    onClick={() => modify({ index: item.layout.i })}
-                  >
-                    수정
-                  </button>
-                )}
-                <button
-                  onMouseDown={(e) => e.stopPropagation()}
-                  onClick={() => DeleteComponent(item)}
-                >
-                  삭제
-                </button>
-                {editMode === index ? (
-                  <div>
-                    <EditMemoComponent
-                      value={item.componentData || ""}
-                      onChange={(newValue) =>
-                        handleInputChange(item.layout.i, newValue)
-                      }
-                    />
-                  </div>
-                ) : (
-                  <div>{item.componentData}</div>
-                )}
-              </div>
-            );
-          })}
+          {layout
+            .filter((item) => {
+              const [type] = item.layout.i.split("-");
+              return type === "memo";
+            })
+            .map((item) => {
+              const [, index] = item.layout.i.split("-");
+              return (
+                <div className={styles.component_box} key={item.layout.i}>
+                  <MemoComponent
+                    index={index}
+                    item={item}
+                    setLayout={setLayout}
+                    EditComponentData={EditComponentData}
+                    DeleteComponent={DeleteComponent}
+                  />
+                </div>
+              );
+            })}
         </GridLayout>
       </div>
     </div>
