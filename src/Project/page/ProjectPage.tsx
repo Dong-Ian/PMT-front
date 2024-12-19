@@ -56,10 +56,10 @@ const ProjectPage: React.FC = () => {
     setCounter((prev) => prev + 1);
   };
 
-  // const modify = ({ index }: { index: string }) => {
-  //   const [type, idx] = index.split("-");
-  //   setEditMode(idx);
-  // };
+  const modify = ({ index }: { index: string }) => {
+    const [type, idx] = index.split("-");
+    setEditMode(idx);
+  };
 
   async function GetComponentList() {
     if (projectSeq) {
@@ -118,51 +118,53 @@ const ProjectPage: React.FC = () => {
     }
   }
 
-  // const initializeCounter = (layouts: LayoutInterface[]) => {
-  //   const maxCounter = layouts.reduce((max, item) => {
-  //     const parts = item.i.split("-");
-  //     const num = Number(parts[parts.length - 1]) || 0;
-  //     return Math.max(max, num);
-  //   }, 0);
+  const initializeCounter = (layouts: LayoutInterface[]) => {
+    const maxCounter = layouts.reduce((max, item) => {
+      const parts = item.layout.i.split("-");
+      const num = Number(parts[parts.length - 1]) || 0;
+      return Math.max(max, num);
+    }, 0);
 
-  //   setCounter(maxCounter + 1);
-  // };
+    setCounter(maxCounter + 1);
+  };
 
-  // async function handleLayoutChange  (newLayout: Layout[])  {
-  //   const changedItem = newLayout.find((newItem) => {
-  //     const oldItem = layout.find((item) => item.i === newItem.i);
-  //     return (
-  //       oldItem &&
-  //       (oldItem.x !== newItem.x ||
-  //         oldItem.y !== newItem.y ||
-  //         oldItem.w !== newItem.w ||
-  //         oldItem.h !== newItem.h)
-  //     );
-  //   });
+  async function handleLayoutChange(newLayout: LayoutInterface[]) {
+    const changedItem = newLayout.find((newItem) => {
+      const oldItem = layout.find((item) => item.layout.i === newItem.layout.i);
+      return (
+        oldItem &&
+        (oldItem.layout.x !== newItem.layout.x ||
+          oldItem.layout.y !== newItem.layout.y ||
+          oldItem.layout.w !== newItem.layout.w ||
+          oldItem.layout.h !== newItem.layout.h)
+      );
+    });
 
-  //   if (changedItem) {
-  //     console.log("Changed Layout Item:", changedItem);
-  //     const result = await MoveComponentFunction({token, item: {
-  //       x: changedItem.x.toString(),
-  //       y: changedItem.y.toString(),
-  //       h: changedItem.h.toString(),
-  //       w: changedItem.w.toString(),
+    if (changedItem) {
+      console.log("Changed Layout Item:", changedItem);
+      const result = await MoveComponentFunction({
+        token,
+        item: {
+          x: changedItem.layout.x.toString(),
+          y: changedItem.layout.y.toString(),
+          h: changedItem.layout.h.toString(),
+          w: changedItem.layout.w.toString(),
+        },
+      });
+    }
 
-  //     },})
-  //   }
-
-  //   setLayout(newLayout);
-  // };
+    setLayout(newLayout);
+  }
 
   useEffect(() => {
     GetComponentList();
   }, []);
 
-  // useEffect(() => {
-  //   if (layout.length > 0) {
-  //     initializeCounter(layout);
-  //   }
-  // }, [layout]);
+  useEffect(() => {
+    if (layout.length > 0) {
+      initializeCounter(layout);
+    }
+  }, [layout]);
 
   return (
     <div className={styles.project_outer_container}>
@@ -182,7 +184,7 @@ const ProjectPage: React.FC = () => {
         margin={[30, 30]}
         containerPadding={[10, 10]}
         compactType={null}
-        // onLayoutChange={handleLayoutChange}
+        onLayoutChange={() => handleLayoutChange(layout)}
       >
         {layout.map((item) => {
           const [type, index] = item.layout.i.split("-");
@@ -202,7 +204,7 @@ const ProjectPage: React.FC = () => {
               ) : (
                 <button
                   onMouseDown={(e) => e.stopPropagation()}
-                  // onClick={() => modify({ index: item.layout.i })}
+                  onClick={() => modify({ index: item.layout.i })}
                 >
                   수정
                 </button>
