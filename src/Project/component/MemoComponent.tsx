@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styles from "../style/project.module.css";
 import ReactMarkdown from "react-markdown";
+import { ScrollArea } from "@mantine/core";
 
 import EditMemoComponent from "./EditMemoComponent";
 import { MemoComponentProps } from "../type/Project.type";
@@ -61,7 +62,25 @@ const MemoComponent: React.FC<MemoComponentProps> = ({
           />
         </div>
       ) : (
-        <ReactMarkdown>{item.componentData}</ReactMarkdown>
+        <ScrollArea h={"calc(100% - 30px)"}>
+          <ReactMarkdown
+            components={{
+              img: ({ node, ...props }) => (
+                <img
+                  {...props}
+                  style={{
+                    maxWidth: "100%",
+                    height: "auto",
+                    border: "1px solid #ddd",
+                    borderRadius: "4px",
+                  }}
+                />
+              ),
+            }}
+          >
+            {item.componentData}
+          </ReactMarkdown>
+        </ScrollArea>
       )}
     </>
   );
