@@ -11,6 +11,7 @@ const EditMemoComponent: React.FC<EditMemoComponentProps> = ({
   return (
     <div>
       <textarea
+        onMouseDown={(e) => e.stopPropagation()}
         value={value}
         onChange={(e) => onChange(e.target.value)}
         style={{

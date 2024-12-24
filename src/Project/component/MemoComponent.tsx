@@ -59,7 +59,11 @@ const MemoComponent: React.FC<MemoComponentProps> = ({
           />
         </div>
       ) : (
-        <div>{item.componentData}</div>
+        <div
+          dangerouslySetInnerHTML={{
+            __html: item.componentData || "",
+          }}
+        />
       )}
     </>
   );

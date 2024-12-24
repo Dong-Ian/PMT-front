@@ -188,7 +188,28 @@ const ProjectPage: React.FC = () => {
       componentData: "",
     };
 
+    // HTML 문자열인지 확인하는 함수
+    const isHtmlString = (text: string) => {
+      const htmlTagRegex = /<\/?p>/; // 간단한 <p> 태그 검사
+      return htmlTagRegex.test(text);
+    };
+
+    // 줄바꿈을 <p> 태그로 변환하는 함수
+    const formatDataToHtml = (text: string) => {
+      // 이미 HTML 형식이면 그대로 반환
+      if (isHtmlString(text)) {
+        return text;
+      }
+      // HTML 형식이 아니면 변환
+      return text
+        .split("\n") // 줄바꿈 기준으로 나눔
+        .map((line) => `<p>${line}</p>`) // 각 줄을 <p> 태그로 감쌈
+        .join(""); // 다시 하나의 문자열로 합침
+    };
+
     if (projectSeq) {
+      const formattedData = formatDataToHtml(currentItem.componentData || "");
+
       const result = await EditComponentDataFunction({
         token,
         item: {
@@ -199,7 +220,7 @@ const ProjectPage: React.FC = () => {
           projectSeq: projectSeq,
           componentSeq: item.componentSeq,
           i: item.layout.i,
-          data: currentItem.componentData || "",
+          data: formattedData,
           type: "memo",
         },
       });
