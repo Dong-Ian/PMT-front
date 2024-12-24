@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-
+import parse from "html-react-parser";
+import styles from "../style/project.module.css";
 import EditMemoComponent from "./EditMemoComponent";
 import { MemoComponentProps } from "../type/Project.type";
 
@@ -59,11 +60,7 @@ const MemoComponent: React.FC<MemoComponentProps> = ({
           />
         </div>
       ) : (
-        <div
-          dangerouslySetInnerHTML={{
-            __html: item.componentData || "",
-          }}
-        />
+        <div className={styles.data}>{parse(item.componentData || "")}</div>
       )}
     </>
   );

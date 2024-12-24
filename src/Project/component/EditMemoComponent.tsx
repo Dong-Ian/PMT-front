@@ -1,18 +1,21 @@
 import React from "react";
-interface EditMemoComponentProps {
-  value: string;
-  onChange: (value: string) => void;
-}
+import { EditMemoComponentProps } from "../type/Project.type";
+
+const stripHtmlTags = (html: string): string => {
+  return html.replace(/<\/p>/g, "\n").replace(/<[^>]*>/g, "");
+};
 
 const EditMemoComponent: React.FC<EditMemoComponentProps> = ({
   value,
   onChange,
 }) => {
+  const strippedValue = stripHtmlTags(value);
+
   return (
     <div>
       <textarea
         onMouseDown={(e) => e.stopPropagation()}
-        value={value}
+        value={strippedValue}
         onChange={(e) => onChange(e.target.value)}
         style={{
           width: "100%",

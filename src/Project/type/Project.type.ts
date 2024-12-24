@@ -60,3 +60,8 @@ export interface InviteProps extends TokenProps {
   projectSeq: string;
   member: string;
 }
+
+export interface EditMemoComponentProps {
+  value: string;
+  onChange: (value: string) => void;
+}

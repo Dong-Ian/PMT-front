@@ -26,6 +26,7 @@ const MainPage: React.FC = () => {
 
   useEffect(() => {
     GetProjectList();
+    // eslint-disable-next-line
   }, []);
 
   return (
