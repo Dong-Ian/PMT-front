@@ -259,9 +259,9 @@ const ProjectPage: React.FC = () => {
         <GridLayout
           className="layout"
           layout={layout.map((item) => item.layout)}
-          cols={12}
+          cols={50}
           rowHeight={30}
-          width={1200}
+          width={5000}
           preventCollision={true}
           isDraggable={true}
           isResizable={true}
