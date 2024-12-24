@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import styles from "../style/project.module.css";
+
 import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import rehypeHighlight from "rehype-highlight";
+import "highlight.js/styles/atom-one-dark.css";
 import { ScrollArea } from "@mantine/core";
 
 import EditMemoComponent from "./EditMemoComponent";
@@ -64,6 +68,8 @@ const MemoComponent: React.FC<MemoComponentProps> = ({
       ) : (
         <ScrollArea h={"calc(100% - 30px)"}>
           <ReactMarkdown
+            remarkPlugins={[remarkGfm]}
+            rehypePlugins={[rehypeHighlight]}
             components={{
               img: ({ node, ...props }) => (
                 <img
