@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import parse from "html-react-parser";
 import styles from "../style/project.module.css";
+import ReactMarkdown from "react-markdown";
+
 import EditMemoComponent from "./EditMemoComponent";
 import { MemoComponentProps } from "../type/Project.type";
 
@@ -53,14 +54,14 @@ const MemoComponent: React.FC<MemoComponentProps> = ({
         삭제
       </button>
       {editMode === index ? (
-        <div>
+        <div className={styles.component_div}>
           <EditMemoComponent
             value={item.componentData || ""}
             onChange={(newValue) => handleInputChange(item.layout.i, newValue)}
           />
         </div>
       ) : (
-        <div className={styles.data}>{parse(item.componentData || "")}</div>
+        <ReactMarkdown>{item.componentData}</ReactMarkdown>
       )}
     </>
   );

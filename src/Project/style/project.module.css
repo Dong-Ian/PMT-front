@@ -103,6 +103,10 @@
   }
 }
 
+.component_div {
+  height: calc(100% - 30px);
+}
+
 .data {
   margin: 10px 0 0 10px;
 }

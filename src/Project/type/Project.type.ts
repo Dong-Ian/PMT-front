@@ -37,10 +37,10 @@ export interface LayoutInterface {
     w: number;
     h: number;
     i: string; // type-counter로 구성
-    maxH: 10;
-    maxW: 10;
-    minH: 2;
-    minW: 3;
+    maxH: number;
+    maxW: number;
+    minH: number;
+    minW: number;
     isResizable: true;
     isDraggable: true;
     isBounded: false;
