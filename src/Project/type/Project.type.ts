@@ -65,3 +65,8 @@ export interface EditMemoComponentProps {
   value: string;
   onChange: (value: string) => void;
 }
+
+export interface TodoInterface {
+  todo: string;
+  isComplete: boolean;
+}

@@ -19,6 +19,7 @@ const CalendarComponent: React.FC<MemoComponentProps> = ({
   const [isSelectable, setIsSelectable] = useState<boolean>(false);
   const [editMode, setEditMode] = useState<string | null>(null);
   const [title, setTitle] = useState<string>("");
+
   function modify({ index }: { index: string }) {
     const [, idx] = index.split("-");
     setEditMode(idx);
@@ -56,7 +57,7 @@ const CalendarComponent: React.FC<MemoComponentProps> = ({
   }, [item.componentData]);
 
   return (
-    <div onMouseDown={(e) => e.stopPropagation()}>
+    <div>
       {editMode === index ? (
         <button
           onMouseDown={(e) => e.stopPropagation()}
@@ -81,35 +82,38 @@ const CalendarComponent: React.FC<MemoComponentProps> = ({
       >
         삭제
       </button>
-      {isSelectable ? (
-        <Input
-          value={title}
-          onChange={(event) => setTitle(event.currentTarget.value)}
-          placeholder="제목 입력"
+      <div onMouseDown={(e) => e.stopPropagation()}>
+        {isSelectable ? (
+          <Input
+            value={title}
+            onChange={(event) => setTitle(event.currentTarget.value)}
+            placeholder="제목 입력"
+          />
+        ) : (
+          <p className={styles.calendar_title}>
+            {item.componentData === ""
+              ? "Calendar"
+              : JSON.parse(item.componentData).title
+              ? JSON.parse(item.componentData).title
+              : "Calendar"}
+          </p>
+        )}
+
+        <Calendar
+          className={styles.reactCalendar}
+          onChange={handleCalendar}
+          value={
+            item.componentData === "" ? "" : JSON.parse(item.componentData).data
+          }
+          calendarType="gregory"
+          view="month"
+          prev2Label={null}
+          next2Label={null}
+          showNeighboringMonth={false}
+          selectRange={true}
+          formatDay={(locale, date) => moment(date).format("D")}
         />
-      ) : (
-        <p className={styles.calendar_title}>
-          {item.componentData === ""
-            ? "Calendar"
-            : JSON.parse(item.componentData).title
-            ? JSON.parse(item.componentData).title
-            : "Calendar"}
-        </p>
-      )}
-      <Calendar
-        className={styles.reactCalendar}
-        onChange={handleCalendar}
-        value={
-          item.componentData === "" ? "" : JSON.parse(item.componentData).data
-        }
-        calendarType="gregory"
-        view="month"
-        prev2Label={null}
-        next2Label={null}
-        showNeighboringMonth={false}
-        selectRange={true}
-        formatDay={(locale, date) => moment(date).format("D")}
-      />
+      </div>
     </div>
   );
 };
