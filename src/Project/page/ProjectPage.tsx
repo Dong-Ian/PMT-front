@@ -18,6 +18,7 @@ import DeleteComponentFunction from "../function/DeleteComponentFunction";
 import { LayoutInterface } from "../type/Project.type";
 import InviteMemberComponent from "../component/InviteMemberComponent";
 import MemoComponent from "../component/MemoComponent";
+import CalendarComponent from "../component/CalendarComponent";
 
 const ProjectPage: React.FC = () => {
   const [searchParams] = useSearchParams();
@@ -41,6 +42,41 @@ const ProjectPage: React.FC = () => {
       componentData: "",
       layout: {
         i: `memo-${counter}`,
+        x: 0,
+        y: maxY,
+        w: 4,
+        h: 4,
+        maxH: 10,
+        maxW: 10,
+        minH: 4,
+        minW: 4,
+        isResizable: true,
+        isDraggable: true,
+        isBounded: false,
+        resizeHandles: ["se", "sw"],
+      },
+    };
+
+    const updatedLayout = [...layout, newItem];
+    setLayout(updatedLayout);
+    setCounter((prev) => prev + 1);
+
+    await CreateComponent(newItem.layout);
+  }
+
+  async function addCalendar() {
+    const maxY = layout.reduce(
+      (max, item) => Math.max(max, item.layout.y + item.layout.h),
+      0
+    );
+
+    const newItem: LayoutInterface = {
+      projectSeq: projectSeq || "0",
+      componentSeq: "",
+      componentName: `calendar-${counter}`,
+      componentData: "",
+      layout: {
+        i: `calendar-${counter}`,
         x: 0,
         y: maxY,
         w: 4,
@@ -251,6 +287,9 @@ const ProjectPage: React.FC = () => {
         <button onClick={addMemo} style={{ marginBottom: "10px" }}>
           + Add Memo
         </button>
+        <button onClick={addCalendar} style={{ marginBottom: "10px" }}>
+          + Add Calendar
+        </button>
         {projectSeq && (
           <InviteMemberComponent token={token} projectSeq={projectSeq} />
         )}
@@ -280,6 +319,25 @@ const ProjectPage: React.FC = () => {
               return (
                 <div className={styles.component_box} key={item.layout.i}>
                   <MemoComponent
+                    index={index}
+                    item={item}
+                    setLayout={setLayout}
+                    EditComponentData={EditComponentData}
+                    DeleteComponent={DeleteComponent}
+                  />
+                </div>
+              );
+            })}
+          {layout
+            .filter((item) => {
+              const [type] = item.layout.i.split("-");
+              return type === "calendar";
+            })
+            .map((item) => {
+              const [, index] = item.layout.i.split("-");
+              return (
+                <div className={styles.component_box} key={item.layout.i}>
+                  <CalendarComponent
                     index={index}
                     item={item}
                     setLayout={setLayout}

@@ -74,6 +74,7 @@ const MemoComponent: React.FC<MemoComponentProps> = ({
               img: ({ node, ...props }) => (
                 <img
                   {...props}
+                  alt=""
                   style={{
                     maxWidth: "100%",
                     height: "auto",
