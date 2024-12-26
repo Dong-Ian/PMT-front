@@ -28,10 +28,16 @@ const CalendarComponent: React.FC<MemoComponentProps> = ({
   function handleCalendar(date: SelectedDate) {
     if (isSelectable) {
       setSelectedDate(date);
-      item.componentData = JSON.stringify({ data: selectedDate });
+
+      const updatedData = JSON.stringify({
+        data: date,
+        title: title,
+      });
+
+      item.componentData = updatedData;
+      EditComponentData(item);
     }
   }
-
   function handleComplete() {
     const updatedData = JSON.stringify({
       data: selectedDate,

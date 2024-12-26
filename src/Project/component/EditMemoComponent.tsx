@@ -20,6 +20,7 @@ const EditMemoComponent: React.FC<EditMemoComponentProps> = ({
         borderRadius: "4px",
         border: "1px solid #ccc",
         lineHeight: "25px",
+        overflowY: "scroll",
       }}
     />
   );
