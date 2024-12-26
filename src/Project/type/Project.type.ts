@@ -41,9 +41,9 @@ export interface LayoutInterface {
     maxW: number;
     minH: number;
     minW: number;
-    isResizable: true;
-    isDraggable: true;
-    isBounded: false;
+    isResizable: boolean;
+    isDraggable: boolean;
+    isBounded: boolean;
     resizeHandles: ["se", "sw"];
   };
 }

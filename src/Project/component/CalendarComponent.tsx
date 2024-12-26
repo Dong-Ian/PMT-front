@@ -90,10 +90,10 @@ const CalendarComponent: React.FC<MemoComponentProps> = ({
       ) : (
         <p className={styles.calendar_title}>
           {item.componentData === ""
-            ? ""
+            ? "Calendar"
             : JSON.parse(item.componentData).title
             ? JSON.parse(item.componentData).title
-            : ""}
+            : "Calendar"}
         </p>
       )}
       <Calendar

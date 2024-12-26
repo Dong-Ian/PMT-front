@@ -80,12 +80,12 @@ const ProjectPage: React.FC = () => {
         x: 0,
         y: maxY,
         w: 4,
-        h: 4,
+        h: 8,
         maxH: 10,
         maxW: 10,
         minH: 4,
         minW: 4,
-        isResizable: true,
+        isResizable: false,
         isDraggable: true,
         isBounded: false,
         resizeHandles: ["se", "sw"],
@@ -169,27 +169,30 @@ const ProjectPage: React.FC = () => {
       });
 
       if (result.result) {
-        const layouts = result.result.map((item: any) => ({
-          projectSeq: projectSeq,
-          componentSeq: item.componentSeq,
-          componentName: item.componentName,
-          componentData: item.componentData,
-          layout: {
-            x: parseInt(item.componentX),
-            y: parseInt(item.componentY),
-            w: parseInt(item.componentWidth),
-            h: parseInt(item.componentHeight),
-            i: item.componentName,
-            maxH: 10,
-            maxW: 10,
-            minH: 4,
-            minW: 4,
-            isResizable: true,
-            isDraggable: true,
-            isBounded: false,
-            resizeHandles: ["se", "sw"],
-          },
-        }));
+        const layouts = result.result.map((item: any) => {
+          const isCalendar = item.componentName.startsWith("calendar");
+          return {
+            projectSeq: projectSeq,
+            componentSeq: item.componentSeq,
+            componentName: item.componentName,
+            componentData: item.componentData,
+            layout: {
+              x: parseInt(item.componentX),
+              y: parseInt(item.componentY),
+              w: parseInt(item.componentWidth),
+              h: isCalendar ? 8 : parseInt(item.componentHeight), // 캘린더의 높이 설정
+              i: item.componentName,
+              maxH: 10,
+              maxW: 10,
+              minH: 4,
+              minW: 4,
+              isResizable: !isCalendar,
+              isDraggable: true,
+              isBounded: false,
+              resizeHandles: isCalendar ? [] : ["se", "sw"],
+            },
+          };
+        });
 
         setLayout(layouts);
         return;
