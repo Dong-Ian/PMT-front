@@ -70,3 +70,8 @@ export interface TodoInterface {
   todo: string;
   isComplete: boolean;
 }
+
+export interface TodosInterface {
+  title: string;
+  todos: TodoInterface[];
+}

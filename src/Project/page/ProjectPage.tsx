@@ -297,6 +297,7 @@ const ProjectPage: React.FC = () => {
           containerPadding={[10, 10]}
           compactType={null}
           onLayoutChange={handleLayoutChange}
+          allowOverlap={true}
         >
           {layout.map((item) => {
             const [type, index] = item.layout.i.split("-");

@@ -45,15 +45,10 @@ const CalendarComponent: React.FC<MemoComponentProps> = ({
   }
 
   useEffect(() => {
-    try {
-      const parsedData = item.componentData
-        ? JSON.parse(item.componentData)
-        : {};
-      setTitle(parsedData.title || "");
-      setSelectedDate(parsedData.data || new Date());
-    } catch (error) {
-      console.error("Invalid JSON in componentData:", item.componentData);
-    }
+    const parsedData = item.componentData ? JSON.parse(item.componentData) : {};
+
+    setTitle(parsedData.title || "");
+    setSelectedDate(parsedData.data || new Date());
   }, [item.componentData]);
 
   return (

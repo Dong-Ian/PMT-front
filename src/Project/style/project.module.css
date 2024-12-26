@@ -192,3 +192,18 @@
   color: #666;
   margin-bottom: 10px;
 }
+
+.todo_title {
+  display: flex;
+  justify-content: left;
+  font-size: 20px;
+  padding: 10px;
+  font-weight: 600;
+}
+
+.todo_list {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-left: 10px;
+}
