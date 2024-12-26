@@ -14,7 +14,7 @@ const TodoComponent: React.FC<MemoComponentProps> = ({
   const [newTodo, setNewTodo] = useState<string>("");
   const [isEditable, setIsEditable] = useState<boolean>(false);
 
-  async function addTodo() {
+  function addTodo() {
     setTodos((prevTodos) => {
       const updatedTodos = [...prevTodos, { todo: newTodo, isComplete: false }];
       item.componentData = JSON.stringify(updatedTodos);
@@ -24,6 +24,15 @@ const TodoComponent: React.FC<MemoComponentProps> = ({
 
     setNewTodo("");
     setIsEditable(false);
+  }
+
+  function deleteTodo(idx: number) {
+    setTodos((prevTodos) => {
+      const updatedTodos = prevTodos.filter((_, index) => index !== idx);
+      item.componentData = JSON.stringify(updatedTodos);
+      EditComponentData(item);
+      return updatedTodos;
+    });
   }
 
   function updateTodoText(index: number, newText: string) {
@@ -70,6 +79,16 @@ const TodoComponent: React.FC<MemoComponentProps> = ({
             style={{ display: "flex", alignItems: "center", gap: "10px" }}
           >
             <p
+              onClick={() => toggleComplete(idx)}
+              style={{
+                cursor: "pointer",
+                fontWeight: "bold",
+                whiteSpace: "pre",
+              }}
+            >
+              {todo.isComplete ? "[v]" : "[  ]"}
+            </p>
+            <p
               onClick={() => {
                 if (editMode === `${idx}-todo`) {
                   setEditMode(null);
@@ -91,13 +110,7 @@ const TodoComponent: React.FC<MemoComponentProps> = ({
                 todo.todo
               )}
             </p>
-
-            <p
-              onClick={() => toggleComplete(idx)}
-              style={{ cursor: "pointer", fontWeight: "bold" }}
-            >
-              {todo.isComplete ? "[v]" : "[ ]"}
-            </p>
+            <button onClick={() => deleteTodo(idx)}>x</button>
           </div>
         );
       })}
@@ -109,6 +122,7 @@ const TodoComponent: React.FC<MemoComponentProps> = ({
             placeholder="할 일을 입력하세요"
           />
           <button onClick={addTodo}>추가</button>
+          <button onClick={() => setIsEditable(false)}>취소</button>
         </div>
       )}
     </div>
