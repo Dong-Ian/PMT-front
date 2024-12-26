@@ -19,6 +19,7 @@ import { LayoutInterface } from "../type/Project.type";
 import InviteMemberComponent from "../component/InviteMemberComponent";
 import MemoComponent from "../component/MemoComponent";
 import CalendarComponent from "../component/CalendarComponent";
+import TodoComponent from "../component/TodoComponent";
 
 const ProjectPage: React.FC = () => {
   const [searchParams] = useSearchParams();
@@ -29,63 +30,36 @@ const ProjectPage: React.FC = () => {
   const [layout, setLayout] = useState<LayoutInterface[]>([]);
   const [counter, setCounter] = useState(0);
 
-  async function addMemo() {
+  async function addComponent(type: "memo" | "calendar" | "todo") {
     const maxY = layout.reduce(
       (max, item) => Math.max(max, item.layout.y + item.layout.h),
       0
     );
 
-    const newItem: LayoutInterface = {
-      projectSeq: projectSeq || "0",
-      componentSeq: "",
-      componentName: `memo-${counter}`,
-      componentData: "",
-      layout: {
-        i: `memo-${counter}`,
-        x: 0,
-        y: maxY,
-        w: 4,
-        h: 4,
-        maxH: 10,
-        maxW: 10,
-        minH: 4,
-        minW: 4,
-        isResizable: true,
-        isDraggable: true,
-        isBounded: false,
-        resizeHandles: ["se", "sw"],
-      },
+    const baseSettings = {
+      memo: { w: 4, h: 4, isResizable: true },
+      calendar: { w: 4, h: 8, isResizable: false },
+      todo: { w: 4, h: 4, isResizable: true },
     };
 
-    const updatedLayout = [...layout, newItem];
-    setLayout(updatedLayout);
-    setCounter((prev) => prev + 1);
-
-    await CreateComponent(newItem.layout);
-  }
-
-  async function addCalendar() {
-    const maxY = layout.reduce(
-      (max, item) => Math.max(max, item.layout.y + item.layout.h),
-      0
-    );
+    const settings = baseSettings[type];
 
     const newItem: LayoutInterface = {
       projectSeq: projectSeq || "0",
       componentSeq: "",
-      componentName: `calendar-${counter}`,
+      componentName: `${type}-${counter}`,
       componentData: "",
       layout: {
-        i: `calendar-${counter}`,
+        i: `${type}-${counter}`,
         x: 0,
         y: maxY,
-        w: 4,
-        h: 8,
+        w: settings.w,
+        h: settings.h,
         maxH: 10,
         maxW: 10,
         minH: 4,
         minW: 4,
-        isResizable: false,
+        isResizable: settings.isResizable,
         isDraggable: true,
         isBounded: false,
         resizeHandles: ["se", "sw"],
@@ -287,11 +261,23 @@ const ProjectPage: React.FC = () => {
   return (
     <div className={styles.project_outer_container}>
       <div className={styles.top_bar}>
-        <button onClick={addMemo} style={{ marginBottom: "10px" }}>
+        <button
+          onClick={() => addComponent("memo")}
+          style={{ marginBottom: "10px" }}
+        >
           + Add Memo
         </button>
-        <button onClick={addCalendar} style={{ marginBottom: "10px" }}>
+        <button
+          onClick={() => addComponent("calendar")}
+          style={{ marginBottom: "10px" }}
+        >
           + Add Calendar
+        </button>
+        <button
+          onClick={() => addComponent("todo")}
+          style={{ marginBottom: "10px" }}
+        >
+          + Add Todo
         </button>
         {projectSeq && (
           <InviteMemberComponent token={token} projectSeq={projectSeq} />
@@ -312,44 +298,29 @@ const ProjectPage: React.FC = () => {
           compactType={null}
           onLayoutChange={handleLayoutChange}
         >
-          {layout
-            .filter((item) => {
-              const [type] = item.layout.i.split("-");
-              return type === "memo";
-            })
-            .map((item) => {
-              const [, index] = item.layout.i.split("-");
-              return (
-                <div className={styles.component_box} key={item.layout.i}>
-                  <MemoComponent
-                    index={index}
-                    item={item}
-                    setLayout={setLayout}
-                    EditComponentData={EditComponentData}
-                    DeleteComponent={DeleteComponent}
-                  />
-                </div>
-              );
-            })}
-          {layout
-            .filter((item) => {
-              const [type] = item.layout.i.split("-");
-              return type === "calendar";
-            })
-            .map((item) => {
-              const [, index] = item.layout.i.split("-");
-              return (
-                <div className={styles.component_box} key={item.layout.i}>
-                  <CalendarComponent
-                    index={index}
-                    item={item}
-                    setLayout={setLayout}
-                    EditComponentData={EditComponentData}
-                    DeleteComponent={DeleteComponent}
-                  />
-                </div>
-              );
-            })}
+          {layout.map((item) => {
+            const [type, index] = item.layout.i.split("-");
+            const componentMap: Record<string, React.FC<any>> = {
+              memo: MemoComponent,
+              calendar: CalendarComponent,
+              todo: TodoComponent,
+            };
+
+            const Component = componentMap[type];
+            if (!Component) return null;
+
+            return (
+              <div className={styles.component_box} key={item.layout.i}>
+                <Component
+                  index={index}
+                  item={item}
+                  setLayout={setLayout}
+                  EditComponentData={EditComponentData}
+                  DeleteComponent={DeleteComponent}
+                />
+              </div>
+            );
+          })}
         </GridLayout>
       </div>
     </div>
