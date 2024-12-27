@@ -6,6 +6,10 @@ import moment from "moment";
 import { MemoComponentProps } from "../type/Project.type";
 import { Input } from "@mantine/core";
 
+import pen_icon from "../../Utils/image/pen.png";
+import check_icon from "../../Utils/image/check.png";
+import trash_icon from "../../Utils/image/trash.png";
+
 type SelectedDate = Date | null | [Date | null, Date | null];
 
 const CalendarComponent: React.FC<MemoComponentProps> = ({
@@ -60,29 +64,34 @@ const CalendarComponent: React.FC<MemoComponentProps> = ({
   return (
     <div>
       {editMode === index ? (
-        <button
+        <img
+          alt=""
           onMouseDown={(e) => e.stopPropagation()}
           onClick={handleComplete}
-        >
-          완료
-        </button>
+          src={check_icon}
+          className={styles.icon}
+        />
       ) : (
-        <button
-          onMouseDown={(e) => e.stopPropagation()}
+        <img
+          alt=""
+          onMouseDown={(e) => {
+            e.stopPropagation();
+          }}
           onClick={() => {
             modify({ index: item.layout.i });
             setIsSelectable(true);
           }}
-        >
-          수정
-        </button>
+          src={pen_icon}
+          className={styles.icon}
+        />
       )}
-      <button
+      <img
+        alt=""
         onMouseDown={(e) => e.stopPropagation()}
         onClick={() => DeleteComponent(item)}
-      >
-        삭제
-      </button>
+        src={trash_icon}
+        className={styles.icon}
+      />
       <div onMouseDown={(e) => e.stopPropagation()}>
         {isSelectable ? (
           <Input

@@ -7,6 +7,10 @@ import rehypeHighlight from "rehype-highlight";
 import "highlight.js/styles/atom-one-dark.css";
 import { ScrollArea } from "@mantine/core";
 
+import pen_icon from "../../Utils/image/pen.png";
+import check_icon from "../../Utils/image/check.png";
+import trash_icon from "../../Utils/image/trash.png";
+
 import EditMemoComponent from "./EditMemoComponent";
 import { MemoComponentProps } from "../type/Project.type";
 
@@ -35,29 +39,35 @@ const MemoComponent: React.FC<MemoComponentProps> = ({
   return (
     <>
       {editMode === index ? (
-        <button
+        <img
           onMouseDown={(e) => e.stopPropagation()}
           onClick={() => {
             setEditMode(null);
             EditComponentData(item);
           }}
-        >
-          완료
-        </button>
+          src={check_icon}
+          alt=""
+          className={styles.icon}
+        />
       ) : (
-        <button
-          onMouseDown={(e) => e.stopPropagation()}
+        <img
+          onMouseDown={(e) => {
+            e.stopPropagation();
+          }}
           onClick={() => modify({ index: item.layout.i })}
-        >
-          수정
-        </button>
+          src={pen_icon}
+          alt=""
+          className={styles.icon}
+        />
       )}
-      <button
+
+      <img
         onMouseDown={(e) => e.stopPropagation()}
         onClick={() => DeleteComponent(item)}
-      >
-        삭제
-      </button>
+        src={trash_icon}
+        alt=""
+        className={styles.icon}
+      />
       {editMode === index ? (
         <div className={styles.component_div}>
           <EditMemoComponent

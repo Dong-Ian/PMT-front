@@ -207,3 +207,10 @@
   gap: 10px;
   padding-left: 10px;
 }
+
+.icon {
+  width: 30px;
+  pointer-events: auto !important;
+  margin: 2px 4px;
+  cursor: pointer;
+}

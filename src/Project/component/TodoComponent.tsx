@@ -3,6 +3,11 @@ import { MemoComponentProps, TodosInterface } from "../type/Project.type";
 import { Input, ScrollArea } from "@mantine/core";
 import styles from "../style/project.module.css";
 
+import pen_icon from "../../Utils/image/pen.png";
+import check_icon from "../../Utils/image/check.png";
+import trash_icon from "../../Utils/image/trash.png";
+import plus_icon from "../../Utils/image/plus.png";
+
 const TodoComponent: React.FC<MemoComponentProps> = ({
   item,
   EditComponentData,
@@ -96,37 +101,40 @@ const TodoComponent: React.FC<MemoComponentProps> = ({
 
   return (
     <>
-      <button
+      <img
+        src={plus_icon}
+        alt=""
         onMouseDown={(e) => e.stopPropagation()}
         onClick={() => setIsEditable(true)}
-      >
-        +
-      </button>
+        className={styles.icon}
+      />
       {editTodoeMode ? (
-        <button
+        <img
+          alt=""
           onMouseDown={(e) => e.stopPropagation()}
           onClick={() => {
             setEditTodoMode(false);
             editTitle();
           }}
-        >
-          완료
-        </button>
+          src={check_icon}
+          className={styles.icon}
+        />
       ) : (
-        <button
+        <img
+          alt=""
           onMouseDown={(e) => e.stopPropagation()}
           onClick={() => setEditTodoMode(true)}
-        >
-          수정
-        </button>
+          src={pen_icon}
+          className={styles.icon}
+        />
       )}
-
-      <button
+      <img
+        alt=""
         onMouseDown={(e) => e.stopPropagation()}
         onClick={() => DeleteComponent(item)}
-      >
-        삭제
-      </button>
+        src={trash_icon}
+        className={styles.icon}
+      />
       <ScrollArea h={"calc(100% - 30px)"}>
         {editTodoeMode ? (
           <Input

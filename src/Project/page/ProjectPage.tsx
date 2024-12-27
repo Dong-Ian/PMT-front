@@ -21,6 +21,10 @@ import MemoComponent from "../component/MemoComponent";
 import CalendarComponent from "../component/CalendarComponent";
 import TodoComponent from "../component/TodoComponent";
 
+import memo_icon from "../../Utils/image/memo.png";
+import todo_icon from "../../Utils/image/checklist.png";
+import calendar_icon from "../../Utils/image/calendar.png";
+
 const ProjectPage: React.FC = () => {
   const [searchParams] = useSearchParams();
   const projectSeq = searchParams.get("projectSeq");
@@ -55,7 +59,7 @@ const ProjectPage: React.FC = () => {
         y: maxY,
         w: settings.w,
         h: settings.h,
-        maxH: 10,
+        maxH: 12,
         maxW: 10,
         minH: 4,
         minW: 4,
@@ -156,7 +160,7 @@ const ProjectPage: React.FC = () => {
               w: parseInt(item.componentWidth),
               h: isCalendar ? 8 : parseInt(item.componentHeight), // 캘린더의 높이 설정
               i: item.componentName,
-              maxH: 10,
+              maxH: 12,
               maxW: 10,
               minH: 4,
               minW: 4,
@@ -261,24 +265,24 @@ const ProjectPage: React.FC = () => {
   return (
     <div className={styles.project_outer_container}>
       <div className={styles.top_bar}>
-        <button
+        <img
+          src={memo_icon}
+          alt=""
           onClick={() => addComponent("memo")}
-          style={{ marginBottom: "10px" }}
-        >
-          + Add Memo
-        </button>
-        <button
+          style={{ marginBottom: "10px", width: "40px", pointerEvents: "auto" }}
+        />
+        <img
+          src={calendar_icon}
+          alt=""
           onClick={() => addComponent("calendar")}
-          style={{ marginBottom: "10px" }}
-        >
-          + Add Calendar
-        </button>
-        <button
+          style={{ marginBottom: "10px", width: "40px", pointerEvents: "auto" }}
+        />
+        <img
+          src={todo_icon}
+          alt=""
           onClick={() => addComponent("todo")}
-          style={{ marginBottom: "10px" }}
-        >
-          + Add Todo
-        </button>
+          style={{ marginBottom: "10px", width: "40px", pointerEvents: "auto" }}
+        />
         {projectSeq && (
           <InviteMemberComponent token={token} projectSeq={projectSeq} />
         )}
