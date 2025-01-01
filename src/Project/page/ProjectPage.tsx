@@ -39,7 +39,7 @@ const ProjectPage: React.FC = () => {
 
     const baseSettings = {
       memo: { w: 4, h: 4, isResizable: true },
-      calendar: { w: 10, h: 12, isResizable: false },
+      calendar: { w: 10, h: 15, isResizable: false },
       todo: { w: 4, h: 4, isResizable: true },
       gant: { w: 10, h: 12, isResizable: false },
     };
@@ -57,7 +57,7 @@ const ProjectPage: React.FC = () => {
         y: maxY,
         w: settings.w,
         h: settings.h,
-        maxH: 12,
+        maxH: 15,
         maxW: 10,
         minH: 4,
         minW: 4,
@@ -158,9 +158,9 @@ const ProjectPage: React.FC = () => {
               x: parseInt(item.componentX),
               y: parseInt(item.componentY),
               w: isCalendar || isGant ? 12 : parseInt(item.componentWidth),
-              h: isCalendar || isGant ? 12 : parseInt(item.componentHeight),
+              h: isCalendar || isGant ? 15 : parseInt(item.componentHeight),
               i: item.componentName,
-              maxH: 12,
+              maxH: 15,
               maxW: 12,
               minH: 4,
               minW: 4,
