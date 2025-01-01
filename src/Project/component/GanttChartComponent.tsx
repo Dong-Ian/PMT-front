@@ -1,19 +1,14 @@
-import React, { useEffect, useState } from "react";
-import styles from "../style/project.module.css";
-import moment from "moment";
+import React, { useState } from "react";
 import { Input } from "@mantine/core";
 import { DateInput } from "@mantine/dates";
 import "@mantine/dates/styles.css";
+import moment from "moment";
+
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
-import { MemoComponentProps, TaskInterface } from "../type/Project.type";
-import trash_icon from "../../Utils/image/trash.png";
+import { TaskInterface } from "../type/Project.type";
 
-const CalendarComponent: React.FC<MemoComponentProps> = ({
-  item,
-  EditComponentData,
-  DeleteComponent,
-}: MemoComponentProps) => {
+const GanttChartComponent: React.FC = () => {
   const [title, setTitle] = useState<string>("");
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
@@ -43,27 +38,12 @@ const CalendarComponent: React.FC<MemoComponentProps> = ({
       end: new Date(endDate),
     };
 
-    const updatedTaskList = [...taskList, newEvent];
-
-    setTaskList(updatedTaskList);
-
-    item.componentData = JSON.stringify({
-      title: title,
-      data: updatedTaskList,
-    });
-    EditComponentData(item);
+    setTaskList((prevEvents) => [...prevEvents, newEvent]);
 
     setTitle("");
     setStartDate(null);
     setEndDate(null);
   };
-
-  useEffect(() => {
-    const parsedData = item.componentData ? JSON.parse(item.componentData) : {};
-
-    setTitle(parsedData.title || "");
-    setTaskList(parsedData.data || []);
-  }, [item.componentData]);
 
   return (
     <div
@@ -71,13 +51,6 @@ const CalendarComponent: React.FC<MemoComponentProps> = ({
         e.stopPropagation();
       }}
     >
-      <img
-        alt=""
-        onMouseDown={(e) => e.stopPropagation()}
-        onClick={() => DeleteComponent(item)}
-        src={trash_icon}
-        className={styles.icon}
-      />
       <Input
         value={title}
         onChange={(e) => setTitle(e.target.value)}
@@ -99,7 +72,7 @@ const CalendarComponent: React.FC<MemoComponentProps> = ({
 
       <button onClick={addTask}>추가하기</button>
 
-      <div style={{ height: "400px", marginTop: "20px" }}>
+      {/* <div style={{ height: "400px", marginTop: "20px" }}>
         <Calendar
           localizer={localizer}
           events={taskList}
@@ -107,9 +80,9 @@ const CalendarComponent: React.FC<MemoComponentProps> = ({
           endAccessor="end"
           style={{ height: 500 }}
         />
-      </div>
+      </div> */}
     </div>
   );
 };
 
-export default CalendarComponent;
+export default GanttChartComponent;

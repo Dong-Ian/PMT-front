@@ -20,10 +20,7 @@ import InviteMemberComponent from "../component/InviteMemberComponent";
 import MemoComponent from "../component/MemoComponent";
 import CalendarComponent from "../component/CalendarComponent";
 import TodoComponent from "../component/TodoComponent";
-
-import memo_icon from "../../Utils/image/memo.png";
-import todo_icon from "../../Utils/image/checklist.png";
-import calendar_icon from "../../Utils/image/calendar.png";
+import GanttChartComponent from "../component/GanttChartComponent";
 
 const ProjectPage: React.FC = () => {
   const [searchParams] = useSearchParams();
@@ -34,7 +31,7 @@ const ProjectPage: React.FC = () => {
   const [layout, setLayout] = useState<LayoutInterface[]>([]);
   const [counter, setCounter] = useState(0);
 
-  async function addComponent(type: "memo" | "calendar" | "todo") {
+  async function addComponent(type: "memo" | "calendar" | "todo" | "gant") {
     const maxY = layout.reduce(
       (max, item) => Math.max(max, item.layout.y + item.layout.h),
       0
@@ -42,8 +39,9 @@ const ProjectPage: React.FC = () => {
 
     const baseSettings = {
       memo: { w: 4, h: 4, isResizable: true },
-      calendar: { w: 4, h: 8, isResizable: false },
+      calendar: { w: 10, h: 12, isResizable: false },
       todo: { w: 4, h: 4, isResizable: true },
+      gant: { w: 10, h: 12, isResizable: false },
     };
 
     const settings = baseSettings[type];
@@ -149,6 +147,8 @@ const ProjectPage: React.FC = () => {
       if (result.result) {
         const layouts = result.result.map((item: any) => {
           const isCalendar = item.componentName.startsWith("calendar");
+          const isGant = item.componentName.startsWith("gant");
+
           return {
             projectSeq: projectSeq,
             componentSeq: item.componentSeq,
@@ -157,17 +157,17 @@ const ProjectPage: React.FC = () => {
             layout: {
               x: parseInt(item.componentX),
               y: parseInt(item.componentY),
-              w: parseInt(item.componentWidth),
-              h: isCalendar ? 8 : parseInt(item.componentHeight), // 캘린더의 높이 설정
+              w: isCalendar || isGant ? 12 : parseInt(item.componentWidth),
+              h: isCalendar || isGant ? 12 : parseInt(item.componentHeight),
               i: item.componentName,
               maxH: 12,
-              maxW: 10,
+              maxW: 12,
               minH: 4,
               minW: 4,
-              isResizable: !isCalendar,
+              isResizable: !isCalendar && !isGant,
               isDraggable: true,
               isBounded: false,
-              resizeHandles: isCalendar ? [] : ["se", "sw"],
+              resizeHandles: isCalendar || isGant ? [] : ["se", "sw"],
             },
           };
         });
@@ -265,24 +265,30 @@ const ProjectPage: React.FC = () => {
   return (
     <div className={styles.project_outer_container}>
       <div className={styles.top_bar}>
-        <img
-          src={memo_icon}
-          alt=""
+        <button
           onClick={() => addComponent("memo")}
-          style={{ marginBottom: "10px", width: "40px", pointerEvents: "auto" }}
-        />
-        <img
-          src={calendar_icon}
-          alt=""
+          style={{ marginBottom: "10px" }}
+        >
+          + Add Memo
+        </button>
+        <button
           onClick={() => addComponent("calendar")}
-          style={{ marginBottom: "10px", width: "40px", pointerEvents: "auto" }}
-        />
-        <img
-          src={todo_icon}
-          alt=""
+          style={{ marginBottom: "10px" }}
+        >
+          + Add Calendar
+        </button>
+        <button
           onClick={() => addComponent("todo")}
-          style={{ marginBottom: "10px", width: "40px", pointerEvents: "auto" }}
-        />
+          style={{ marginBottom: "10px" }}
+        >
+          + Add Todo
+        </button>
+        <button
+          onClick={() => addComponent("gant")}
+          style={{ marginBottom: "10px" }}
+        >
+          + Add Gantt
+        </button>
         {projectSeq && (
           <InviteMemberComponent token={token} projectSeq={projectSeq} />
         )}
@@ -309,6 +315,7 @@ const ProjectPage: React.FC = () => {
               memo: MemoComponent,
               calendar: CalendarComponent,
               todo: TodoComponent,
+              gant: GanttChartComponent,
             };
 
             const Component = componentMap[type];

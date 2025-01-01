@@ -75,3 +75,10 @@ export interface TodosInterface {
   title: string;
   todos: TodoInterface[];
 }
+
+export interface TaskInterface {
+  id: number;
+  title: string;
+  start: Date;
+  end: Date;
+}

@@ -76,7 +76,7 @@ const MemoComponent: React.FC<MemoComponentProps> = ({
           />
         </div>
       ) : (
-        <ScrollArea h={"calc(100% - 30px)"}>
+        <ScrollArea h={"calc(100% - 30px)"} style={{ padding: "10px" }}>
           <ReactMarkdown
             remarkPlugins={[remarkGfm]}
             rehypePlugins={[rehypeHighlight]}
