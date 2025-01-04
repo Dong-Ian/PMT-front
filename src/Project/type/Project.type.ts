@@ -81,4 +81,5 @@ export interface TaskInterface {
   title: string;
   start: Date;
   end: Date;
+  group?: number;
 }

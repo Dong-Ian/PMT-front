@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useRecoilValue } from "recoil";
-import { tokenState } from "../../Utils/Atom/Atom";
+import { tokenState, userState } from "../../Utils/Atom/Atom";
 
 import styles from "../style/project.module.css";
 
@@ -21,15 +21,18 @@ import MemoComponent from "../component/MemoComponent";
 import CalendarComponent from "../component/CalendarComponent";
 import TodoComponent from "../component/TodoComponent";
 import GanttChartComponent from "../component/GanttChartComponent";
+import ChattingPage from "../../Chatting/page/ChattingPage";
+import { Button } from "@mantine/core";
 
 const ProjectPage: React.FC = () => {
   const [searchParams] = useSearchParams();
   const projectSeq = searchParams.get("projectSeq");
   const token = useRecoilValue(tokenState);
   const previousLayoutRef = useRef<LayoutInterface[]>([]);
-
+  const userData = useRecoilValue(userState);
   const [layout, setLayout] = useState<LayoutInterface[]>([]);
   const [counter, setCounter] = useState(0);
+  const [isMessageTabOpen, setIsMessageTabOpen] = useState<boolean>(false);
 
   async function addComponent(type: "memo" | "calendar" | "todo" | "gant") {
     const maxY = layout.reduce(
@@ -265,30 +268,11 @@ const ProjectPage: React.FC = () => {
   return (
     <div className={styles.project_outer_container}>
       <div className={styles.top_bar}>
-        <button
-          onClick={() => addComponent("memo")}
-          style={{ marginBottom: "10px" }}
-        >
-          + Add Memo
-        </button>
-        <button
-          onClick={() => addComponent("calendar")}
-          style={{ marginBottom: "10px" }}
-        >
-          + Add Calendar
-        </button>
-        <button
-          onClick={() => addComponent("todo")}
-          style={{ marginBottom: "10px" }}
-        >
-          + Add Todo
-        </button>
-        <button
-          onClick={() => addComponent("gant")}
-          style={{ marginBottom: "10px" }}
-        >
-          + Add Gantt
-        </button>
+        <Button onClick={() => addComponent("memo")}>+ Add Memo</Button>
+        <Button onClick={() => addComponent("calendar")}>+ Add Calendar</Button>
+        <Button onClick={() => addComponent("todo")}>+ Add Todod</Button>
+        <Button onClick={() => addComponent("gant")}>+ Add Gantt</Button>
+
         {projectSeq && (
           <InviteMemberComponent token={token} projectSeq={projectSeq} />
         )}
@@ -335,6 +319,12 @@ const ProjectPage: React.FC = () => {
           })}
         </GridLayout>
       </div>
+      {projectSeq && (
+        <ChattingPage
+          userName={userData.UserName}
+          chatRoomSeq={parseInt(projectSeq)}
+        />
+      )}
     </div>
   );
 };

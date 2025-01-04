@@ -31,6 +31,7 @@ const InviteMemberComponent: React.FC<InviteMemberComponentProps> = ({
 
       if (result.code === "0000") {
         alert("초대가 완료되었습니다.");
+        setInviteMember("");
       }
     }
   }
