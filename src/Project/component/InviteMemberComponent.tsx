@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styles from "../style/project.module.css";
 
-import { Input } from "@mantine/core";
+import { Button, Input } from "@mantine/core";
 
 import InviteMemberFunction from "../function/InviteMemberFunction";
 import { TokenProps } from "../../Utils/type/UtilType";
@@ -43,7 +43,7 @@ const InviteMemberComponent: React.FC<InviteMemberComponentProps> = ({
         onChange={(event) => setInviteMember(event.currentTarget.value)}
         placeholder="멤버를 초대하세요"
       />
-      <button onClick={InviteMember}>초대하기</button>
+      <Button onClick={InviteMember}>초대하기</Button>
     </div>
   );
 };

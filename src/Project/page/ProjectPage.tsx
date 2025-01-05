@@ -24,6 +24,8 @@ import GanttChartComponent from "../component/GanttChartComponent";
 import ChattingPage from "../../Chatting/page/ChattingPage";
 import { Button } from "@mantine/core";
 
+import chat_icon from "../../Utils/image/message.png";
+
 const ProjectPage: React.FC = () => {
   const [searchParams] = useSearchParams();
   const projectSeq = searchParams.get("projectSeq");
@@ -197,7 +199,7 @@ const ProjectPage: React.FC = () => {
         },
       });
 
-      if (result.code === "COMPONENT0000") {
+      if (result.code === "0000") {
         GetComponentList();
       }
     }
@@ -276,6 +278,11 @@ const ProjectPage: React.FC = () => {
         {projectSeq && (
           <InviteMemberComponent token={token} projectSeq={projectSeq} />
         )}
+        <img
+          onClick={() => setIsMessageTabOpen(true)}
+          src={chat_icon}
+          style={{ height: "30px", width: "30px" }}
+        />
       </div>
       <div className={styles.project_container}>
         <GridLayout
@@ -319,10 +326,11 @@ const ProjectPage: React.FC = () => {
           })}
         </GridLayout>
       </div>
-      {projectSeq && (
+      {projectSeq && isMessageTabOpen && (
         <ChattingPage
           userName={userData.UserName}
           chatRoomSeq={parseInt(projectSeq)}
+          setIsMessageTabOpen={setIsMessageTabOpen}
         />
       )}
     </div>

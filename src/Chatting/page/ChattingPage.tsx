@@ -5,11 +5,13 @@ import { ScrollArea } from "@mantine/core";
 interface ChattingPageProps {
   userName: string;
   chatRoomSeq: number;
+  setIsMessageTabOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const ChattingPage: React.FC<ChattingPageProps> = ({
   userName,
   chatRoomSeq,
+  setIsMessageTabOpen,
 }: ChattingPageProps) => {
   const [messages, setMessages] = useState<string[]>([]);
   const [inputMessage, setInputMessage] = useState<string>("");
@@ -60,6 +62,7 @@ const ChattingPage: React.FC<ChattingPageProps> = ({
 
   return (
     <div className={styles.chatting_box}>
+      <p onClick={() => setIsMessageTabOpen(false)}>x</p>
       <ScrollArea style={{ height: "calc(100% - 80px)", overflowY: "auto" }}>
         <div className={styles.messages}>
           {messages.map((msg, index) => {
