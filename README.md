@@ -1,46 +1,61 @@
-# Getting Started with Create React App
+# PMT (Project Management Tool)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+PMT는 팀 프로젝트 관리를 보다 효율적으로 돕기 위해 개발된 올인원 협업 도구입니다. 직관적인 드래그 앤 드롭 기능과 유연한 레이아웃 조정을 통해 사용자 맞춤형 워크스페이스를 제공합니다.
 
-## Available Scripts
+## 주요 기능
 
-In the project directory, you can run:
+### 1. 유연한 그리드 레이아웃
 
-### `npm start`
+    • Grid Layout 라이브러리를 활용하여 각 컴포넌트를 드래그하여 위치를 조정하거나 크기를 변경할 수 있습니다.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+    • 컴포넌트 예시
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+        메모: 마크다운 문법을 활용해 프로젝트 아이디어와 간단한 메모 작성
 
-### `npm test`
+        캘린더: 일정 관리 및 마일스톤 설정
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+        투두 리스트: 할 일 관리와 진행 상황 추적
 
-### `npm run build`
+### 2. 프로젝트 공유 및 협업
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+    • 팀 멤버를 초대하여 프로젝트를 함께 관리할 수 있습니다.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+    • 멤버 간의 공유 워크스페이스 제공
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+        컴포넌트 생성, 수정, 삭제
 
-### `npm run eject`
+        프로젝트 진행 상황의 실시간 공유
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+### 3. 팀 채팅
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+    • 프로젝트와 관련된 실시간 소통을 위한 채팅 기능 제공
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+    • 멤버 간 원활한 커뮤니케이션 환경 조성
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+### 4. 프로젝트 관리 도구
 
-## Learn More
+    • 간트 차트 (Gantt Chart)
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+        작업 일정 시각화 및 마일스톤 관리
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+        각 작업의 시작/종료 시점과 관계 설정
+
+    • 칸반 보드 (Kanban Board)
+
+        작업 진행 상태를 한눈에 볼 수 있는 카드 기반 보드 제공
+
+        작업 추가, 이동, 완료 처리 가능
+
+## 기술 스택
+
+    • React, TypeScript
+
+## 사용 예시
+
+    1. 팀 멤버와 함께 프로젝트 생성
+
+    2. 캘린더와 투두 리스트를 활용해 작업 계획 수립
+
+    3. 실시간 채팅으로 작업 관련 논의
+
+    4. 간트 차트와 칸반 보드로 프로젝트 진행 상태 시각화
