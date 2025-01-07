@@ -1,6 +1,7 @@
 export interface LoginFunctionProps {
   email: string;
-  password: string;
+  name: string;
+  image: string;
 }
 
 export interface TextFieldProps {

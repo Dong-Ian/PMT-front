@@ -1,28 +1,39 @@
 import React, { useEffect, useState } from "react";
-import styles from "../style/main.module.css";
-import CreateProjectButton from "../component/CreateProjectButton";
-import PreviewProject from "../component/PreviewProject";
+import { useNavigate } from "react-router-dom";
+
 import { useRecoilValue } from "recoil";
 import { tokenState } from "../../Utils/Atom/Atom";
+
+import styles from "../style/main.module.css";
+
+import CreateProjectButton from "../component/CreateProjectButton";
+import PreviewProject from "../component/PreviewProject";
+
 import GetProjectListFunction from "../function/GetProjectListFunction";
 import { PreviewProjectProps } from "../type/Main.type";
 
 const MainPage: React.FC = () => {
   const token = useRecoilValue(tokenState);
+  const navigation = useNavigate();
   const [previewProjectList, setPreviewProjectList] = useState<
     PreviewProjectProps[] | []
   >([]);
 
-  async function GetProjectList() {
+  const GetProjectList = async () => {
     const result = await GetProjectListFunction({ token });
     if (result.code === "0000") {
       setPreviewProjectList(result.result);
       return;
     }
 
+    if (result.code.endsWith("001")) {
+      navigation("/", { replace: true });
+      return;
+    }
+
     alert("프로젝트 정보를 불러오지 못하였습니다.");
     return;
-  }
+  };
 
   useEffect(() => {
     GetProjectList();

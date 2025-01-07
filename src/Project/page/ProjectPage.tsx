@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { tokenState, userState } from "../../Utils/Atom/Atom";
 
@@ -8,6 +8,7 @@ import styles from "../style/project.module.css";
 import GridLayout, { Layout } from "react-grid-layout";
 import "react-grid-layout/css/styles.css";
 import "react-resizable/css/styles.css";
+import { Button } from "@mantine/core";
 
 import GetComponentListFunction from "../function/GetComponentListFunction";
 import CreateComponentFunction from "../function/CreateComponentFunction";
@@ -22,11 +23,11 @@ import CalendarComponent from "../component/CalendarComponent";
 import TodoComponent from "../component/TodoComponent";
 import GanttChartComponent from "../component/GanttChartComponent";
 import ChattingPage from "../../Chatting/page/ChattingPage";
-import { Button } from "@mantine/core";
 
 import chat_icon from "../../Utils/image/message.png";
 
 const ProjectPage: React.FC = () => {
+  const navigation = useNavigate();
   const [searchParams] = useSearchParams();
   const projectSeq = searchParams.get("projectSeq");
   const token = useRecoilValue(tokenState);
@@ -36,7 +37,7 @@ const ProjectPage: React.FC = () => {
   const [counter, setCounter] = useState(0);
   const [isMessageTabOpen, setIsMessageTabOpen] = useState<boolean>(false);
 
-  async function addComponent(type: "memo" | "calendar" | "todo" | "gant") {
+  const addComponent = async (type: "memo" | "calendar" | "todo" | "gant") => {
     const maxY = layout.reduce(
       (max, item) => Math.max(max, item.layout.y + item.layout.h),
       0
@@ -78,9 +79,9 @@ const ProjectPage: React.FC = () => {
     setCounter((prev) => prev + 1);
 
     await CreateComponent(newItem.layout);
-  }
+  };
 
-  function initializeCounter(layouts: LayoutInterface[]) {
+  const initializeCounter = (layouts: LayoutInterface[]) => {
     const maxCounter = layouts.reduce((max, item) => {
       const parts = item.layout.i.split("-");
       const num = Number(parts[parts.length - 1]) || 0;
@@ -88,9 +89,9 @@ const ProjectPage: React.FC = () => {
     }, 0);
 
     setCounter(maxCounter + 1);
-  }
+  };
 
-  async function handleLayoutChange(newLayout: Layout[]) {
+  const handleLayoutChange = async (newLayout: Layout[]) => {
     const mappedLayout: LayoutInterface[] = layout.map((item) => {
       const updatedLayout = newLayout.find(
         (newItem) => newItem.i === item.layout.i
@@ -140,14 +141,19 @@ const ProjectPage: React.FC = () => {
       }
     }
     previousLayoutRef.current = mappedLayout;
-  }
+  };
 
-  async function GetComponentList() {
+  const GetComponentList = async () => {
     if (projectSeq) {
       const result = await GetComponentListFunction({
         token: token,
         projectSeq: projectSeq,
       });
+
+      if (result.code.endsWith("001")) {
+        navigation("/", { replace: true });
+        return;
+      }
 
       if (result.result) {
         const layouts = result.result.map((item: any) => {
@@ -181,9 +187,9 @@ const ProjectPage: React.FC = () => {
         return;
       }
     }
-  }
+  };
 
-  async function CreateComponent(item: Layout) {
+  const CreateComponent = async (item: Layout) => {
     if (projectSeq) {
       const result = await CreateComponentFunction({
         token,
@@ -203,9 +209,9 @@ const ProjectPage: React.FC = () => {
         GetComponentList();
       }
     }
-  }
+  };
 
-  async function EditComponentData(item: LayoutInterface) {
+  const EditComponentData = async (item: LayoutInterface) => {
     const currentItem = layout.find((l) => l.layout.i === item.layout.i) || {
       componentData: "",
     };
@@ -230,9 +236,9 @@ const ProjectPage: React.FC = () => {
         GetComponentList();
       }
     }
-  }
+  };
 
-  async function DeleteComponent(item: LayoutInterface) {
+  const DeleteComponent = async (item: LayoutInterface) => {
     const res = window.confirm("컴포넌트를 삭제하시겠습니까?");
     if (res && projectSeq) {
       const result = await DeleteComponentFunction({
@@ -254,7 +260,7 @@ const ProjectPage: React.FC = () => {
         GetComponentList();
       }
     }
-  }
+  };
 
   useEffect(() => {
     GetComponentList();
@@ -279,6 +285,7 @@ const ProjectPage: React.FC = () => {
           <InviteMemberComponent token={token} projectSeq={projectSeq} />
         )}
         <img
+          alt=""
           onClick={() => setIsMessageTabOpen(true)}
           src={chat_icon}
           style={{ height: "30px", width: "30px" }}

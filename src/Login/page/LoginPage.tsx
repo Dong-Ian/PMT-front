@@ -1,72 +1,36 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-
-import { useSetRecoilState } from "recoil";
-import { tokenState, userState } from "../../Utils/Atom/Atom";
-
+import React from "react";
 import styles from "../style/login.module.css";
+import {
+  generateCodeChallenge,
+  generateCodeVerifier,
+} from "../function/generateCodeFunction";
 
-import LoginFunction from "../function/LoginFunction";
-
-import Email from "../component/Email";
-import Password from "../component/Password";
+import sign_up_button from "../../Utils/image/web_neutral_rd_SI@4x.png";
 
 const LoginPage: React.FC = () => {
-  const navigate = useNavigate();
+  const googleLogin = async () => {
+    const codeVerifier = generateCodeVerifier();
+    const codeChallenge = await generateCodeChallenge(codeVerifier);
 
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
+    localStorage.setItem("code_verifier", codeVerifier);
 
-  const setToken = useSetRecoilState(tokenState);
-  const setUserState = useSetRecoilState(userState);
-
-  const Login = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    if (email === "" || password === "") {
-      alert("아이디/비밀번호를 입력해주세요.");
-      return;
-    }
-
-    const result = await LoginFunction({ email, password });
-    console.log(result);
-
-    if (result.code === "0000") {
-      setToken({
-        accessToken: result.accessToken,
-        refreshToken: result.refreshToken,
-      });
-      setUserState(result.userData);
-
-      navigate("/main");
-      return;
-    }
-
-    alert(
-      "등록되지 않은 아이디이거나\n아이디 또는 비밀번호를 잘못 입력했습니다."
-    );
-    return;
+    window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${process.env.REACT_APP_GOOGLE_AUTH_CLIENT_ID}&redirect_uri=${process.env.REACT_APP_GOOGLE_REDIRECT_URI}&response_type=code&scope=email+profile+openid&code_challenge=${codeChallenge}&code_challenge_method=S256`;
   };
 
   return (
-    <div style={{ backgroundColor: "white", height: "100vh" }}>
-      <p className={styles.title}>PMT</p>
+    <>
+      <div className={styles.main_box}>
+        <h1 className={styles.title}>PMT</h1>
+        <p className={styles.description}>Project Management Tool</p>
 
-      <form className={styles.login_box} method="post" onSubmit={Login}>
-        <Email value={email} onChange={setEmail} />
-        <Password value={password} onChange={setPassword} />
-        <input className={styles.login_button} type="submit" value="로그인" />
-        <button
-          className={styles.signup_button}
-          onClick={(e) => {
-            e.preventDefault();
-            navigate("/signup");
-          }}
-        >
-          회원이 아니신가요?
-        </button>
-      </form>
-    </div>
+        <img
+          alt="login button"
+          onClick={googleLogin}
+          className={styles.login_button}
+          src={sign_up_button}
+        />
+      </div>
+    </>
   );
 };
 
