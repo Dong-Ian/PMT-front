@@ -7,11 +7,22 @@ const PreviewProject: React.FC<PreviewProjectProps> = (props) => {
   const navigate = useNavigate();
 
   return (
-    <div
-      onClick={() => navigate(`/project?projectSeq=${props.projectSeq}`)}
-      className={styles.create_button}
-    >
-      <p>preview</p>
+    <div className={styles.project}>
+      <div
+        onClick={() => navigate(`/project?projectSeq=${props.projectSeq}`)}
+        className={styles.create_button}
+      >
+        <p>preview</p>
+      </div>
+      <div className={styles.project_description}>
+        <div>
+          <p className={styles.project_title}>{props.projectName}</p>
+          <p className={styles.project_type}>{props.projectType}</p>
+        </div>
+        <p className={styles.project_mod_date}>
+          마지막 수정일: {props.modDate}
+        </p>
+      </div>
     </div>
   );
 };
