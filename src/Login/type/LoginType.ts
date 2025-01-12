@@ -1,4 +1,5 @@
 export interface LoginFunctionProps {
+  accessToken: string;
   email: string;
   name: string;
   image: string;

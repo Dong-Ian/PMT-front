@@ -278,7 +278,7 @@ const ProjectPage: React.FC = () => {
       <div className={styles.top_bar}>
         <Button onClick={() => addComponent("memo")}>+ Add Memo</Button>
         <Button onClick={() => addComponent("calendar")}>+ Add Calendar</Button>
-        <Button onClick={() => addComponent("todo")}>+ Add Todod</Button>
+        <Button onClick={() => addComponent("todo")}>+ Add Todo</Button>
         <Button onClick={() => addComponent("gant")}>+ Add Gantt</Button>
 
         {projectSeq && (
@@ -335,7 +335,7 @@ const ProjectPage: React.FC = () => {
       </div>
       {projectSeq && isMessageTabOpen && (
         <ChattingPage
-          userName={userData.UserName}
+          userName={userData.userName}
           chatRoomSeq={parseInt(projectSeq)}
           setIsMessageTabOpen={setIsMessageTabOpen}
         />

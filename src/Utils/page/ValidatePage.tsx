@@ -9,7 +9,7 @@ const ValidatePage: React.FC = () => {
   const [token, setToken] = useRecoilState(tokenState);
 
   const validUser = async () => {
-    if (!token) {
+    if (token.accessToken === "") {
       navigation("/login", { replace: true });
       return;
     }

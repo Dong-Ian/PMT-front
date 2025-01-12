@@ -17,6 +17,12 @@ export const tokenState = atom({
 
 export const userState = atom({
   key: "userState",
-  default: { Email: "", IsAdmin: 0, UserId: "", UserName: "", UserStatus: 0 },
+  default: {
+    email: "",
+    isAdmin: "",
+    userId: "",
+    userName: "",
+    profileImage: "",
+  },
   effects_UNSTABLE: [persistAtom],
 });

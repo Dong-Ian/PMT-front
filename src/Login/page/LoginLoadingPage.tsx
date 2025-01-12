@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
-import { tokenState } from "../../Utils/Atom/Atom";
+import { tokenState, userState } from "../../Utils/Atom/Atom";
 import LoginFunction from "../function/LoginFunction";
 
 const LoginLoadingPage: React.FC = () => {
@@ -12,6 +12,7 @@ const LoginLoadingPage: React.FC = () => {
 
   const navigate = useNavigate();
   const setToken = useSetRecoilState(tokenState);
+  const setUserState = useSetRecoilState(userState);
 
   const handleLogin = async () => {
     try {
@@ -50,13 +51,15 @@ const LoginLoadingPage: React.FC = () => {
         const userInfo = await userInfoResponse.json();
 
         const result = await LoginFunction({
+          accessToken: tokenData.access_token,
           email: userInfo.email,
           name: userInfo.name,
           image: userInfo.picture,
         });
 
         if (result.code === "0000") {
-          setToken(result.accessToken);
+          setToken({ accessToken: result.accessToken, refreshToken: "" });
+          setUserState(result.userData);
           navigate("/main", { replace: true });
         } else {
           alert("로그인에 실패하였습니다.");
