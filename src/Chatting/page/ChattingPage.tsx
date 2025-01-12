@@ -1,6 +1,10 @@
 import React, { useEffect, useState, useRef } from "react";
 import styles from "../style/chatting.module.css";
 import { ScrollArea } from "@mantine/core";
+import { useRecoilValue } from "recoil";
+import { tokenState, userState } from "../../Utils/Atom/Atom";
+import * as Stomp from "@stomp/stompjs";
+import SockJS from "sockjs-client";
 
 interface ChattingPageProps {
   userName: string;
@@ -16,36 +20,40 @@ const ChattingPage: React.FC<ChattingPageProps> = ({
   const [messages, setMessages] = useState<string[]>([]);
   const [inputMessage, setInputMessage] = useState<string>("");
   const websocket = useRef<WebSocket | null>(null);
+  const token = useRecoilValue(tokenState);
+  const stompClient = useRef<Stomp.Client | null>(null);
 
   useEffect(() => {
-    const ws = new WebSocket(
-      `${process.env.REACT_APP_WEBSOCKET}/test/chat/send`
+    const socket = new SockJS(`${process.env.REACT_APP_API}/chat`);
+    const client = Stomp.Stomp.over(socket);
+
+    client.connect(
+      {
+        Authorization: `Bearer ${token.accessToken}`,
+      },
+      () => {
+        console.log("WebSocket connection established");
+
+        client.subscribe(`/topic/chatRoom/${chatRoomSeq}`, (message) => {
+          const newMessage = message.body;
+          setMessages((prev) => [...prev, newMessage]);
+        });
+      },
+      (error: Stomp.Message) => {
+        console.error("WebSocket error:", error);
+      }
     );
 
-    ws.onopen = () => {
-      console.log("WebSocket connection established");
-    };
-
-    ws.onmessage = (event) => {
-      const newMessage = event.data;
-      setMessages((prev) => [...prev, newMessage]);
-    };
-
-    ws.onclose = () => {
-      console.log("WebSocket connection closed");
-    };
-
-    ws.onerror = (error) => {
-      console.error("WebSocket error:", error);
-    };
-
-    websocket.current = ws;
+    stompClient.current = client;
 
     return () => {
-      ws.close();
+      if (stompClient.current) {
+        stompClient.current.deactivate().then(() => {
+          console.log("WebSocket connection closed");
+        });
+      }
     };
-  }, []);
-
+  }, [chatRoomSeq]);
   const sendMessage = () => {
     if (websocket.current && inputMessage.trim()) {
       const messageData = {
