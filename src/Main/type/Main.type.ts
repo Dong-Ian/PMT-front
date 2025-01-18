@@ -6,6 +6,7 @@ export interface PreviewProjectProps {
   projectName: string;
   projectSeq: string;
   projectType: string;
+  projectCategory: string;
   userId: string;
   userName: string;
 }

@@ -17,7 +17,7 @@ const PreviewProject: React.FC<PreviewProjectProps> = (props) => {
       <div className={styles.project_description}>
         <div>
           <p className={styles.project_title}>{props.projectName}</p>
-          <p className={styles.project_type}>{props.projectType}</p>
+          <p className={styles.project_type}>{props.projectCategory}</p>
         </div>
         <p className={styles.project_mod_date}>
           마지막 수정일: {props.modDate}

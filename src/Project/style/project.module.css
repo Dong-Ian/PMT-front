@@ -144,3 +144,9 @@
   margin: 2px 4px;
   cursor: pointer;
 }
+
+.chat_icon {
+  position: fixed;
+  right: 30px;
+  top: 15px;
+}

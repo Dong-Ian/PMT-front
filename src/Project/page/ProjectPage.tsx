@@ -288,12 +288,14 @@ const ProjectPage: React.FC = () => {
         {projectSeq && (
           <InviteMemberComponent token={token} projectSeq={projectSeq} />
         )}
-        <img
-          alt=""
-          onClick={() => setIsMessageTabOpen(true)}
-          src={chat_icon}
-          style={{ height: "30px", width: "30px" }}
-        />
+        <div className={styles.chat_icon}>
+          <img
+            alt=""
+            onClick={() => setIsMessageTabOpen(true)}
+            src={chat_icon}
+            style={{ height: "30px", width: "30px" }}
+          />
+        </div>
       </div>
       <div className={styles.project_container}>
         <GridLayout

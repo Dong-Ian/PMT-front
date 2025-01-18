@@ -2,10 +2,11 @@ import { TokenProps } from "../../Utils/type/UtilType";
 
 export interface CreateProjectFunctionProps extends TokenProps {
   title: string;
-  projectType?: {
+  projectCategory: {
     value: string;
     label: string;
   } | null;
+  projectType?: string;
 }
 
 export interface GetComponentListFunctionProps extends TokenProps {

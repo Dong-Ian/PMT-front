@@ -15,10 +15,11 @@ const CreateProjectPage: React.FC = () => {
   const token = useRecoilValue(tokenState);
 
   const [projectTitle, setProjectTitle] = useState<string>("");
-  const [projectType, setProjectType] = useState<{
+  const [projectCategory, setProjectCategory] = useState<{
     value: string;
     label: string;
   } | null>(null);
+  const [projectType, setProjectType] = useState("");
 
   const [inputValue, setInputValue] = useState("");
 
@@ -29,10 +30,10 @@ const CreateProjectPage: React.FC = () => {
     { value: "학교", label: "학교 프로젝트" },
   ];
 
-  function handleProjectTypeChange(
+  function handleProjectCategoryChange(
     selectedOption: { value: string; label: string } | null
   ) {
-    setProjectType(selectedOption);
+    setProjectCategory(selectedOption);
   }
 
   function handleInputChange(newValue: string) {
@@ -58,6 +59,7 @@ const CreateProjectPage: React.FC = () => {
         token,
         title: projectTitle,
         projectType: projectType,
+        projectCategory: projectCategory,
       });
 
       if (result.code === "0000") {
@@ -97,8 +99,8 @@ const CreateProjectPage: React.FC = () => {
 
           <Select
             options={options}
-            value={projectType}
-            onChange={handleProjectTypeChange}
+            value={projectCategory}
+            onChange={handleProjectCategoryChange}
             placeholder="프로젝트 유형을 선택하세요"
             inputValue={inputValue}
             onInputChange={handleInputChange}
