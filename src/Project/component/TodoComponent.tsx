@@ -24,7 +24,7 @@ const TodoComponent: React.FC<MemoComponentProps> = ({
   const [title, setTitle] = useState<string>("");
   const [isEditable, setIsEditable] = useState<boolean>(false);
 
-  function addTodo() {
+  const addTodo = () => {
     setTodos((prevTodos) => {
       const updatedTodos = {
         ...prevTodos,
@@ -37,9 +37,9 @@ const TodoComponent: React.FC<MemoComponentProps> = ({
 
     setNewTodo("");
     setIsEditable(false);
-  }
+  };
 
-  function deleteTodo(idx: number) {
+  const deleteTodo = (idx: number) => {
     setTodos((prevTodos) => {
       const updatedTodos = {
         ...prevTodos,
@@ -49,9 +49,9 @@ const TodoComponent: React.FC<MemoComponentProps> = ({
       EditComponentData(item);
       return updatedTodos;
     });
-  }
+  };
 
-  function updateTodoText(index: number, newText: string) {
+  const updateTodoText = (index: number, newText: string) => {
     setTodos((prevTodos) => {
       const updatedTodos = {
         ...prevTodos,
@@ -63,9 +63,9 @@ const TodoComponent: React.FC<MemoComponentProps> = ({
       EditComponentData(item);
       return updatedTodos;
     });
-  }
+  };
 
-  function toggleComplete(index: number) {
+  const toggleComplete = (index: number) => {
     setTodos((prevTodos) => {
       const updatedTodos = {
         ...prevTodos,
@@ -77,9 +77,9 @@ const TodoComponent: React.FC<MemoComponentProps> = ({
       EditComponentData(item);
       return updatedTodos;
     });
-  }
+  };
 
-  function editTitle() {
+  const editTitle = () => {
     const updatedData = JSON.stringify({
       title: title,
       todos: todos.todos,
@@ -88,7 +88,7 @@ const TodoComponent: React.FC<MemoComponentProps> = ({
     item.componentData = updatedData;
     EditComponentData(item);
     setEditMode(null);
-  }
+  };
 
   useEffect(() => {
     const parsedData = item.componentData

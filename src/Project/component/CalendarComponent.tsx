@@ -140,11 +140,7 @@ const CalendarComponent: React.FC<MemoComponentProps> = ({
   }, [item.componentData]);
 
   return (
-    <div
-      onMouseDown={(e) => {
-        e.stopPropagation();
-      }}
-    >
+    <div>
       <img
         alt=""
         onMouseDown={(e) => e.stopPropagation()}
@@ -152,107 +148,113 @@ const CalendarComponent: React.FC<MemoComponentProps> = ({
         src={trash_icon}
         className={styles.icon}
       />
-      <Input
-        value={taskTitle}
-        onChange={(e) => setTaskTitle(e.target.value)}
-        placeholder="추가할 일정 이름"
-        style={{ marginBottom: "10px" }}
-      />
-      <div className={styles.date_input}>
-        <DateInput
-          valueFormat="DD/MM/YYYY HH:mm:ss"
-          value={startDate}
-          onChange={setStartDate}
-          placeholder="시작 날짜"
-          style={{ width: "250px" }}
-          clearable
-        />
-        <DateInput
-          valueFormat="DD/MM/YYYY HH:mm:ss"
-          value={endDate}
-          onChange={setEndDate}
-          placeholder="종료 날짜"
-          style={{ width: "250px" }}
-          clearable
-        />
-        <button onClick={addTask}>추가하기</button>
-      </div>
-
-      <div style={{ height: "600px", marginTop: "20px" }}>
-        <Calendar
-          localizer={localizer}
-          events={taskList}
-          startAccessor="start"
-          endAccessor="end"
-          style={{ height: 700 }}
-          onSelectEvent={(event) => handleEventClick(event)}
-        />
-      </div>
-
-      <Modal
-        opened={modalOpened}
-        onClose={() => setModalOpened(false)}
-        title="Task 정보"
-        centered
+      <div
+        onMouseDown={(e) => {
+          e.stopPropagation();
+        }}
       >
-        {selectedTask && !editMode && (
-          <div>
-            <p>
-              <strong>제목:</strong> {selectedTask.title}
-            </p>
-            <p>
-              <strong>시작:</strong>{" "}
-              {moment(selectedTask.start).format("YYYY-MM-DD HH:mm:ss")}
-            </p>
-            <p>
-              <strong>종료:</strong>{" "}
-              {moment(selectedTask.end).format("YYYY-MM-DD HH:mm:ss")}
-            </p>
-            <Button
-              onClick={() => {
-                setEditMode(true);
-                setNewTitle(selectedTask.title);
-                setNewStartDate(selectedTask.start);
-                setNewEndDate(selectedTask.end);
-              }}
-            >
-              수정
-            </Button>
-          </div>
-        )}
-        {selectedTask && editMode && (
-          <div>
-            <Input
-              value={newTitle}
-              onChange={(e) => setNewTitle(e.target.value)}
-              placeholder="제목을 입력"
-            />
-            <div className={styles.date_input}>
-              <DateInput
-                valueFormat="DD/MM/YYYY HH:mm:ss"
-                value={newStartDate}
-                onChange={setNewStartDate}
-                placeholder="시작 날짜"
-                style={{ width: "250px" }}
-                clearable
-              />
-              <DateInput
-                valueFormat="DD/MM/YYYY HH:mm:ss"
-                value={newEndDate}
-                onChange={setNewEndDate}
-                placeholder="종료 날짜"
-                style={{ width: "250px" }}
-                clearable
-              />
+        <Input
+          value={taskTitle}
+          onChange={(e) => setTaskTitle(e.target.value)}
+          placeholder="추가할 일정 이름"
+          style={{ marginBottom: "10px" }}
+        />
+        <div className={styles.date_input}>
+          <DateInput
+            valueFormat="DD/MM/YYYY HH:mm:ss"
+            value={startDate}
+            onChange={setStartDate}
+            placeholder="시작 날짜"
+            style={{ width: "250px" }}
+            clearable
+          />
+          <DateInput
+            valueFormat="DD/MM/YYYY HH:mm:ss"
+            value={endDate}
+            onChange={setEndDate}
+            placeholder="종료 날짜"
+            style={{ width: "250px" }}
+            clearable
+          />
+          <button onClick={addTask}>추가하기</button>
+        </div>
+
+        <div style={{ height: "600px", marginTop: "20px" }}>
+          <Calendar
+            localizer={localizer}
+            events={taskList}
+            startAccessor="start"
+            endAccessor="end"
+            style={{ height: 700 }}
+            onSelectEvent={(event) => handleEventClick(event)}
+          />
+        </div>
+
+        <Modal
+          opened={modalOpened}
+          onClose={() => setModalOpened(false)}
+          title="Task 정보"
+          centered
+        >
+          {selectedTask && !editMode && (
+            <div>
+              <p>
+                <strong>제목:</strong> {selectedTask.title}
+              </p>
+              <p>
+                <strong>시작:</strong>{" "}
+                {moment(selectedTask.start).format("YYYY-MM-DD HH:mm:ss")}
+              </p>
+              <p>
+                <strong>종료:</strong>{" "}
+                {moment(selectedTask.end).format("YYYY-MM-DD HH:mm:ss")}
+              </p>
+              <Button
+                onClick={() => {
+                  setEditMode(true);
+                  setNewTitle(selectedTask.title);
+                  setNewStartDate(selectedTask.start);
+                  setNewEndDate(selectedTask.end);
+                }}
+              >
+                수정
+              </Button>
             </div>
-            <Button onClick={editTask}>완료</Button>
-          </div>
-        )}
-        <Button color="red" onClick={deleteTask}>
-          일정 삭제
-        </Button>
-        <Button onClick={() => setModalOpened(false)}>닫기</Button>
-      </Modal>
+          )}
+          {selectedTask && editMode && (
+            <div>
+              <Input
+                value={newTitle}
+                onChange={(e) => setNewTitle(e.target.value)}
+                placeholder="제목을 입력"
+              />
+              <div className={styles.date_input}>
+                <DateInput
+                  valueFormat="DD/MM/YYYY HH:mm:ss"
+                  value={newStartDate}
+                  onChange={setNewStartDate}
+                  placeholder="시작 날짜"
+                  style={{ width: "250px" }}
+                  clearable
+                />
+                <DateInput
+                  valueFormat="DD/MM/YYYY HH:mm:ss"
+                  value={newEndDate}
+                  onChange={setNewEndDate}
+                  placeholder="종료 날짜"
+                  style={{ width: "250px" }}
+                  clearable
+                />
+              </div>
+              <Button onClick={editTask}>완료</Button>
+            </div>
+          )}
+          <Button color="red" onClick={deleteTask}>
+            일정 삭제
+          </Button>
+          <Button onClick={() => setModalOpened(false)}>닫기</Button>
+        </Modal>
+      </div>
     </div>
   );
 };

@@ -23,18 +23,18 @@ const MemoComponent: React.FC<MemoComponentProps> = ({
 }: MemoComponentProps) => {
   const [editMode, setEditMode] = useState<string | null>(null);
 
-  function modify({ index }: { index: string }) {
+  const modify = ({ index }: { index: string }) => {
     const [, idx] = index.split("-");
     setEditMode(idx);
-  }
+  };
 
-  function handleInputChange(index: string, value: string) {
+  const handleInputChange = (index: string, value: string) => {
     setLayout((prevLayout) =>
       prevLayout.map((item) =>
         item.layout.i === index ? { ...item, componentData: value } : item
       )
     );
-  }
+  };
 
   return (
     <>

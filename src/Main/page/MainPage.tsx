@@ -46,9 +46,10 @@ const MainPage: React.FC = () => {
         <p className={styles.title}>Project</p>
         <div className={styles.inner_container}>
           <CreateProjectButton />
-          {previewProjectList.map((project, index) => {
-            return <PreviewProject key={index} {...project} />;
-          })}
+          {previewProjectList &&
+            previewProjectList.map((project, index) => {
+              return <PreviewProject key={index} {...project} />;
+            })}
         </div>
       </div>
     </div>

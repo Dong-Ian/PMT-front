@@ -109,6 +109,7 @@ const ProjectPage: React.FC = () => {
           },
         };
       }
+
       return item;
     });
 
@@ -136,8 +137,8 @@ const ProjectPage: React.FC = () => {
         },
       });
 
-      if (result.code === "0000") {
-        GetComponentList();
+      if (result.code !== "0000") {
+        alert("에러가 발생하였습니다.");
       }
     }
     previousLayoutRef.current = mappedLayout;
@@ -205,8 +206,8 @@ const ProjectPage: React.FC = () => {
         },
       });
 
-      if (result.code === "0000") {
-        GetComponentList();
+      if (result.code !== "0000") {
+        alert("에러가 발생하였습니다.");
       }
     }
   };
@@ -232,8 +233,8 @@ const ProjectPage: React.FC = () => {
         },
       });
 
-      if (result.code === "0000") {
-        GetComponentList();
+      if (result.code !== "0000") {
+        alert("에러가 발생하였습니다.");
       }
     }
   };
@@ -258,7 +259,10 @@ const ProjectPage: React.FC = () => {
 
       if (result.code === "0000") {
         GetComponentList();
+        return;
       }
+
+      alert("에러가 발생하였습니다.");
     }
   };
 
